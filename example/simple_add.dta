@@ -1,0 +1,12 @@
+; This is a comment
+noop
+;This is also a comment
+noop
+
+cil 87 r1
+cil 38 r2
+add r1 r2
+ofv r2
+onl
+
+halt

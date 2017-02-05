@@ -1,0 +1,2 @@
+; Should expect newline but found 'right' in file __FILE__ at line 2
+halt right now

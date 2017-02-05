@@ -97,9 +97,20 @@ private:
 	std::vector<var> data;
 
 public:
-	Code() : data(std::vector<var>()) {};
+	int curr_index;
 
-	void push_op(op o) { data.push_back(var(o)); };
-	void push_int(int64_t i) { data.push_back(var(i)); };
-	void push_float(double f) { data.push_back(var(f)); };
+	Code() : data(std::vector<var>()), curr_index(0) {};
+
+	void push_op(op o) {
+		curr_index++;
+		data.push_back(var(o));
+	};
+	void push_int(int64_t i) {
+		curr_index++;
+		data.push_back(var(i));
+	};
+	void push_float(double f) {
+		curr_index++;
+		data.push_back(var(f));
+	};
 };

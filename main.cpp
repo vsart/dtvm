@@ -55,10 +55,14 @@ int main(int argc, char **argv)
 			}
 
 			auto code = parse(file, file_path);
+			if (code.curr_index == 0) {
+				std::cerr << Error() << "Got invalid code from parser" << std::endl;
+				return 1;
+			}
 
 			if (dtvm_args::parse_and_print) {
 				// @TODO Add a printer
-				std::cout << Error() << "Cannot print parsed code" << std::endl;
+				std::cout << Error() << "Cannot print parsed code yet" << std::endl;
 				return 0;
 			}
 
@@ -74,7 +78,7 @@ int main(int argc, char **argv)
 				if (arg == "-no-ansi-color-codes" || arg == "-no-acc")
 					dtvm_args::no_ansi_color_codes = true;
 				else
-					std::cout << Warn() << "Unknown option '" << argv[i] << "'\n";
+					std::cout << Warn() << "Unknown option '" << argv[i] << "'" << std::endl;;
 
 			}
 
