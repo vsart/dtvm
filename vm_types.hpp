@@ -2,6 +2,7 @@
 
 #include <cinttypes>
 #include <ostream>
+#include <vector>
 
 
 enum class op {
@@ -35,51 +36,7 @@ enum class op {
 };
 
 // Implement the "<<" ostream operator for op
-std::ostream &operator<<(std::ostream &os, op const &o)
-{
-	switch (o) {
-	case op::halt:
-		return os << "halt";
-	case op::noop:
-		return os << "noop";
-	case op::mov:
-		return os << "mov ";
-	case op::push:
-		return os << "push";
-	case op::pop:
-		return os << "pop ";
-	case op::add:
-		return os << "add ";
-	case op::sub:
-		return os << "sub ";
-	case op::mul:
-		return os << "mul ";
-	case op::div:
-		return os << "div ";
-	case op::mod:
-		return os << "mod ";
-	case op::cil:
-		return os << "cil ";
-	case op::cfl:
-		return os << "cfl ";
-	case op::ofv:
-		return os << "ofv ";
-	case op::onl:
-		return os << "onl ";
-	case op::cmp:
-		return os << "cmp ";
-	case op::cmpz:
-		return os << "cmpz";
-	case op::jmp:
-		return os << "jmp ";
-	case op::jgt:
-		return os << "jgt ";
-	case op::jeq:
-		return os << "jeq ";
-	case op::jlt:
-		return os << "jlt ";
-	}
-}
+std::ostream &operator<<(std::ostream &os, op const &o);
 
 
 enum class var_type {
@@ -87,7 +44,6 @@ enum class var_type {
 	floating,
 	operation,
 };
-
 
 
 class var {
@@ -102,9 +58,9 @@ private:
 
 public:
 	var() = delete; // No default constructor
-	var(int64_t &i) : type(var_type::integer) { value.i = i; };
-	var(double &f) : type(var_type::floating) { value.f = f; };
-	var(op &o) : type(var_type::operation) { value.o = o; };
+	var(int64_t i) : type(var_type::integer) { value.i = i; };
+	var(double f) : type(var_type::floating) { value.f = f; };
+	var(op o) : type(var_type::operation) { value.o = o; };
 
 	var_type get_type() const { return type; };
 
@@ -133,13 +89,17 @@ public:
 };
 
 // Implement the "<<" ostream operator for 'var'
-std::ostream &operator<<(std::ostream &os, var const &v) {
-	switch (v.get_type()) {
-	case var_type::integer:
-		return os << v.as_int();
-	case var_type::floating:
-		return os << v.as_float();
-	case var_type::operation:
-		return os << v.as_op();
-	}
-}
+std::ostream &operator<<(std::ostream &os, var const &v);
+
+
+class Code {
+private:
+	std::vector<var> data;
+
+public:
+	Code() : data(std::vector<var>()) {};
+
+	void push_op(op o) { data.push_back(var(o)); };
+	void push_int(int64_t i) { data.push_back(var(i)); };
+	void push_float(double f) { data.push_back(var(f)); };
+};

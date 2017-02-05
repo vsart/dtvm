@@ -7,6 +7,8 @@
 #include "error.hpp"
 #include "vm_types.hpp"
 
+#include "parser.hpp"
+
 
 #ifndef VERSION
 #define VERSION "undef"
@@ -52,7 +54,7 @@ int main(int argc, char **argv)
 				return 1;
 			}
 
-			// auto code = parse(file, file_path);
+			auto code = parse(file, file_path);
 
 			if (dtvm_args::parse_and_print) {
 				// @TODO Add a printer
