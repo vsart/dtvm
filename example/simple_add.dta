@@ -3,10 +3,10 @@ noop
 ;This is also a comment
 noop
 
-cil 87 r1
-cil 38 r2
-add r1 r2
-ofv r2
+cil 87	1
+cil 38	2
+add 1	2
+ofv 2
 onl
 
 halt

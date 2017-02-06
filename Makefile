@@ -1,5 +1,5 @@
 CC = clang++
-CF = -O2 -g -march=native -Wall -Wextra -Wold-style-cast -Werror -std=c++1z -fno-rtti -fno-omit-frame-pointer
+CF = -O2 -g -march=native -Wall -Wextra -Wold-style-cast -Wpedantic -Werror -std=c++1z -fno-rtti -fno-omit-frame-pointer
 
 OBJS=args.o parser.o vm_types.o error.o
 

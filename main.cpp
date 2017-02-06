@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 				return 1;
 			}
 
+			// Parse code
 			auto code = parse(file, file_path);
 			if (code.curr_index == 0) {
 				std::cerr << Error() << "Got invalid code from parser" << std::endl;
@@ -61,8 +62,7 @@ int main(int argc, char **argv)
 			}
 
 			if (dtvm_args::parse_and_print) {
-				// @TODO Add a printer
-				std::cout << Error() << "Cannot print parsed code yet" << std::endl;
+				code.display();
 				return 0;
 			}
 

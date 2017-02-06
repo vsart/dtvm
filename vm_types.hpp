@@ -3,6 +3,7 @@
 #include <cinttypes>
 #include <ostream>
 #include <vector>
+#include <iostream>
 
 
 enum class op {
@@ -101,6 +102,7 @@ public:
 
 	Code() : data(std::vector<var>()), curr_index(0) {};
 
+
 	void push_op(op o) {
 		curr_index++;
 		data.push_back(var(o));
@@ -112,5 +114,176 @@ public:
 	void push_float(double f) {
 		curr_index++;
 		data.push_back(var(f));
+	};
+
+
+	void display() const {
+		auto it = data.begin();
+		it++;
+
+		while (true) {
+			if (it == data.end()) {
+				std::cout << std::endl;
+				return;
+			}
+
+			std::cout << std::endl;
+			switch (it->as_op()) {
+			case op::halt:
+				std::cout << it->as_op();
+				it++;
+				break;
+
+			case op::noop:
+				std::cout << it->as_op();
+				it++;
+				break;
+
+			case op::mov:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::push:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::pop:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::add:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::sub:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::mul:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::div:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::mod:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::cil:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::cfl:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_float() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::ofv:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::onl:
+				std::cout << it->as_op();
+				it++;
+				break;
+
+			case op::cmp:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::cmpz:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::jmp:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::jgt:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::jeq:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			case op::jlt:
+				std::cout << it->as_op() << '\t';
+				it++;
+				std::cout << it->as_int();
+				it++;
+				break;
+
+			default:
+				std::cout << "????";
+			}
+		}
 	};
 };

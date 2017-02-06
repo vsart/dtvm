@@ -45,8 +45,6 @@ std::ostream &operator<<(std::ostream &os, op const &o)
 	case op::jlt:
 		return os << "jlt ";
 	}
-
-	return os << "????";
 }
 
 
@@ -60,6 +58,4 @@ std::ostream &operator<<(std::ostream &os, var const &v)
 	case var_type::operation:
 		return os << v.as_op();
 	}
-
-	return os << "????";
 }
