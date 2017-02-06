@@ -194,6 +194,16 @@ Code parse(std::ifstream& src, std::string& src_name)
 			if (parse_reg_reg(line_stream, src_name, line_num, code))
 				return Code();
 
+		} else if (token == "push") {
+			code.push_op(op::push);
+			if (parse_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "pop") {
+			code.push_op(op::pop);
+			if (parse_reg(line_stream, src_name, line_num, code))
+				return Code();
+
 		} else if (token == "add") {
 			code.push_op(op::add);
 			if (parse_reg_reg(line_stream, src_name, line_num, code))
@@ -206,6 +216,16 @@ Code parse(std::ifstream& src, std::string& src_name)
 
 		} else if (token == "mul") {
 			code.push_op(op::mul);
+			if (parse_reg_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "div") {
+			code.push_op(op::div);
+			if (parse_reg_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "mod") {
+			code.push_op(op::mod);
 			if (parse_reg_reg(line_stream, src_name, line_num, code))
 				return Code();
 
@@ -227,6 +247,16 @@ Code parse(std::ifstream& src, std::string& src_name)
 		} else if (token == "onl") {
 			code.push_op(op::onl);
 			if (check_empty(line_stream, src_name, line_num))
+				return Code();
+
+		} else if (token == "cmp") {
+			code.push_op(op::cmp);
+			if (parse_reg_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "cmpz") {
+			code.push_op(op::cmpz);
+			if (parse_reg(line_stream, src_name, line_num, code))
 				return Code();
 
 		} else if (token == "jmp") {
