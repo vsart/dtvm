@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 
 		// Parse possible flags
 		// @TODO Pass over the handling of flags to the `args` translation unit
-		for (int i = 3; i < argc; i++) {
+		for (int i = 2; i < argc; i++) {
 			std::string arg(argv[i]);
 
 			if (arg == "-no-ansi-color-codes" || arg == "-no-acc")
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 		}
 
 		// Attempt to open file
-		std::string file_path(argv[2]);
+		std::string file_path(argv[1]);
 		std::ifstream file(file_path);
 		if (!file.is_open()) {
 			std::cerr << Error() << "Could not open file '" << file_path << "'" << std::endl;
