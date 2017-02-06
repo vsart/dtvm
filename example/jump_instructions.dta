@@ -11,11 +11,13 @@ noop
 noop
 
 
-
+@alsoLabelNumber5
 @labelNumber5
+@snake_case_5
 noop
 
 jmp @labelNumber5
-jgt @labelNumber5
-jeq @labelNumber5
-jlt @labelNumber5
+jgt @alsoLabelNumber5
+jeq @snake_case_5
+jlt @labelIntoHiddenHalt
+@labelIntoHiddenHalt
