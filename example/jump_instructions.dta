@@ -1,0 +1,21 @@
+noop
+
+noop
+
+
+noop
+
+noop
+
+
+noop
+
+
+
+@labelNumber5
+noop
+
+jmp @labelNumber5
+jgt @labelNumber5
+jeq @labelNumber5
+jlt @labelNumber5
