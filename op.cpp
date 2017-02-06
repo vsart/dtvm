@@ -1,4 +1,4 @@
-#include "vm_types.hpp"
+#include "op.hpp"
 
 
 std::ostream &operator<<(std::ostream &os, op const &o)
@@ -44,18 +44,5 @@ std::ostream &operator<<(std::ostream &os, op const &o)
 		return os << "jeq ";
 	case op::jlt:
 		return os << "jlt ";
-	}
-}
-
-
-std::ostream &operator<<(std::ostream &os, var const &v)
-{
-	switch (v.get_type()) {
-	case var_type::integer:
-		return os << v.as_int();
-	case var_type::floating:
-		return os << v.as_float();
-	case var_type::operation:
-		return os << v.as_op();
 	}
 }

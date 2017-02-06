@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-#include "vm_types.hpp"
+#include "code.hpp"
 
 
 // parse
