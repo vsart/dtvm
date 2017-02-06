@@ -17,6 +17,9 @@
 
 int main(int argc, char **argv)
 {
+	// @TODO: Make it possible through a flag to one day be able to generate
+	// a binary pre-compiled file.
+
 	if (argc == 1) {
 		// @TODO Print out some usage info
 		std::cerr << Error() << "Invalid number of arguments" << std::endl;
@@ -30,69 +33,42 @@ int main(int argc, char **argv)
 			return 0;
 		}
 
+		// Parse possible flags
+		for (int i = 3; i < argc; i++) {
+			std::string arg(argv[i]);
 
-		if (std::string("c") == argv[1]) {
-			// This is a compilation invocation
-
-			// Parse possible compiler flags
-			for (int i = 3; i < argc; i++) {
-				std::string arg(argv[i]);
-
-				if (arg == "-no-ansi-color-codes" || arg == "-no-acc")
-					dtvm_args::no_ansi_color_codes = true;
-				else if (arg == "-parse-and-print")
-					dtvm_args::parse_and_print = true;
-				else
-					std::cout << Warn() << "Unknown option '" << argv[i] << "'\n";
-			}
-
-			// Attempt to open file
-			std::string file_path(argv[2]);
-			std::ifstream file(file_path);
-			if (!file.is_open()) {
-				std::cerr << Error() << "Could not open file '" << file_path << "'" << std::endl;
-				return 1;
-			}
-
-			// Parse code
-			auto code = parse(file, file_path);
-			if (code.curr_index == 0) {
-				std::cerr << Error() << "Got invalid code from parser" << std::endl;
-				return 1;
-			}
-
-			if (dtvm_args::parse_and_print) {
-				code.display();
-				return 0;
-			}
-
-			// @TODO Add a compiler
-			std::cout << Error() << "Compilation not yet implemented" << std::endl;
-		} else {
-			// This is a VM invocation
-
-			// Parse possible VM flags
-			for (int i = 2; i < argc; i++) {
-				std::string arg(argv[i]);
-
-				if (arg == "-no-ansi-color-codes" || arg == "-no-acc")
-					dtvm_args::no_ansi_color_codes = true;
-				else
-					std::cout << Warn() << "Unknown option '" << argv[i] << "'" << std::endl;;
-
-			}
-
-			// Attempt to open file
-			std::string file_path(argv[1]);
-			std::ifstream file(file_path, std::ios::in | std::ios::binary);
-			if (!file.is_open()) {
-				std::cerr << Error() << "Could not open file '" << file_path << "'" << std::endl;
-				return 1;
-			}
-
-			// @TODO: Add the VM
-			std::cout << Error() << "The VM is not yet implemented" << std::endl;
+			if (arg == "-no-ansi-color-codes" || arg == "-no-acc")
+				dtvm_args::no_ansi_color_codes = true;
+			else if (arg == "-parse-and-print")
+				dtvm_args::parse_and_print = true;
+			else
+				std::cout << Warn() << "Unknown option '" << argv[i] << "'\n";
 		}
+
+		// Attempt to open file
+		std::string file_path(argv[2]);
+		std::ifstream file(file_path);
+		if (!file.is_open()) {
+			std::cerr << Error() << "Could not open file '" << file_path << "'" << std::endl;
+			return 1;
+		}
+
+		// Parse code
+		auto code = parse(file, file_path);
+		if (code.curr_index == 0) {
+			std::cerr << Error() << "Got invalid code from parser" << std::endl;
+			return 1;
+		}
+
+		// If the program was called with -parse-and-print, just output the bytecode
+		// and stop execution.
+		if (dtvm_args::parse_and_print) {
+			code.display();
+			return 0;
+		}
+
+		// Run the code in the VM
+		std::cout << Error() << "The VM is not yet implemented" << std::endl;
 	}
 
 	return 0;
