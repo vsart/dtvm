@@ -32,6 +32,17 @@ std::tuple<int64_t, bool> get_reg(std::stringstream &ss, const std::string &sn, 
 }
 
 
+std::tuple<double, bool> get_float(std::stringstream &ss, const std::string &sn, const int &ln) {
+	double float_token;
+	ss >> float_token;
+	if (ss.fail()) {
+		std::cerr << Error() << "Invalid register literal in " << sn << '.' << ln << std::endl;
+		return std::make_tuple(0., true);
+	}
+	return std::make_tuple(float_token, false);
+}
+
+
 bool check_empty(std::stringstream &ss, const std::string &sn, const int &ln)
 {
 	std::string token;
@@ -117,6 +128,23 @@ Code parse(std::ifstream& src, std::string& src_name)
 			code.push_op(op::cil);
 
 			auto tmp1 = get_int(line_stream, src_name, line_num);
+			if (std::get<1>(tmp1))
+				return Code();
+			code.push_int(std::get<0>(tmp1));
+
+			auto tmp2 = get_reg(line_stream, src_name, line_num);
+			if (std::get<1>(tmp2))
+				return Code();
+			code.push_int(std::get<0>(tmp2));
+
+			if (check_empty(line_stream, src_name, line_num))
+				return Code();
+
+
+		} else if (token == "cfl") {
+			code.push_op(op::cfl);
+
+			auto tmp1 = get_float(line_stream, src_name, line_num);
 			if (std::get<1>(tmp1))
 				return Code();
 			code.push_int(std::get<0>(tmp1));
