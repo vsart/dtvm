@@ -59,6 +59,92 @@ bool check_empty(std::stringstream &ss, const std::string &sn, const int &ln)
 }
 
 
+bool parse_reg_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code &c)
+{
+	auto tmp1 = get_reg(ss, sn, ln);
+	if (std::get<1>(tmp1))
+		return true;
+	c.push_int(std::get<0>(tmp1));
+
+	auto tmp2 = get_reg(ss, sn, ln);
+	if (std::get<1>(tmp2))
+		return true;
+	c.push_int(std::get<0>(tmp2));
+
+	if (check_empty(ss, sn, ln))
+		return true;
+
+	return false;
+}
+
+
+bool parse_int_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code &c)
+{
+	auto tmp1 = get_int(ss, sn, ln);
+	if (std::get<1>(tmp1))
+		return true;
+	c.push_int(std::get<0>(tmp1));
+
+	auto tmp2 = get_reg(ss, sn, ln);
+	if (std::get<1>(tmp2))
+		return true;
+	c.push_int(std::get<0>(tmp2));
+
+	if (check_empty(ss, sn, ln))
+		return true;
+
+	return false;
+}
+
+
+bool parse_flt_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code &c)
+{
+	auto tmp1 = get_float(ss, sn, ln);
+	if (std::get<1>(tmp1))
+		return true;
+	c.push_float(std::get<0>(tmp1));
+
+	auto tmp2 = get_reg(ss, sn, ln);
+	if (std::get<1>(tmp2))
+		return true;
+	c.push_int(std::get<0>(tmp2));
+
+	if (check_empty(ss, sn, ln))
+		return true;
+
+	return false;
+}
+
+
+bool parse_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code &c)
+{
+	auto tmp1 = get_reg(ss, sn, ln);
+	if (std::get<1>(tmp1))
+		return true;
+	c.push_int(std::get<0>(tmp1));
+
+	if (check_empty(ss, sn, ln))
+		return true;
+
+	return false;
+}
+
+
+bool parse_lab(std::stringstream &ss ,const std::string &sn, const int &ln, Code &c, std::map<int64_t, std::string> &m)
+{
+	std::string token;
+	ss >> token;
+	m[c.curr_index] = token;
+
+	// Add a filler
+	c.push_int(-1);
+
+	if (check_empty(ss, sn, ln))
+		return true;
+	return false;
+}
+
+
 Code parse(std::ifstream& src, std::string& src_name)
 {
 	// Rely that src is opened and at the proper point
@@ -95,135 +181,73 @@ Code parse(std::ifstream& src, std::string& src_name)
 
 		if (token == "halt") {
 			code.push_op(op::halt);
-
 			if (check_empty(line_stream, src_name, line_num))
 				return Code();
-
 
 		} else if (token == "noop") {
 			code.push_op(op::noop);
-
 			if (check_empty(line_stream, src_name, line_num))
 				return Code();
 
+		} else if (token == "mov") {
+			code.push_op(op::mov);
+			if (parse_reg_reg(line_stream, src_name, line_num, code))
+				return Code();
 
 		} else if (token == "add") {
 			code.push_op(op::add);
-
-			auto tmp1 = get_reg(line_stream, src_name, line_num);
-			if (std::get<1>(tmp1))
-				return Code();
-			code.push_int(std::get<0>(tmp1));
-
-			auto tmp2 = get_reg(line_stream, src_name, line_num);
-			if (std::get<1>(tmp2))
-				return Code();
-			code.push_int(std::get<0>(tmp2));
-
-			if (check_empty(line_stream, src_name, line_num))
+			if (parse_reg_reg(line_stream, src_name, line_num, code))
 				return Code();
 
+		} else if (token == "sub") {
+			code.push_op(op::sub);
+			if (parse_reg_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "mul") {
+			code.push_op(op::mul);
+			if (parse_reg_reg(line_stream, src_name, line_num, code))
+				return Code();
 
 		} else if (token == "cil") {
 			code.push_op(op::cil);
-
-			auto tmp1 = get_int(line_stream, src_name, line_num);
-			if (std::get<1>(tmp1))
+			if (parse_int_reg(line_stream, src_name, line_num, code))
 				return Code();
-			code.push_int(std::get<0>(tmp1));
-
-			auto tmp2 = get_reg(line_stream, src_name, line_num);
-			if (std::get<1>(tmp2))
-				return Code();
-			code.push_int(std::get<0>(tmp2));
-
-			if (check_empty(line_stream, src_name, line_num))
-				return Code();
-
 
 		} else if (token == "cfl") {
 			code.push_op(op::cfl);
-
-			auto tmp1 = get_float(line_stream, src_name, line_num);
-			if (std::get<1>(tmp1))
+			if (parse_flt_reg(line_stream, src_name, line_num, code))
 				return Code();
-			code.push_int(std::get<0>(tmp1));
-
-			auto tmp2 = get_reg(line_stream, src_name, line_num);
-			if (std::get<1>(tmp2))
-				return Code();
-			code.push_int(std::get<0>(tmp2));
-
-			if (check_empty(line_stream, src_name, line_num))
-				return Code();
-
 
 		} else if (token == "ofv") {
 			code.push_op(op::ofv);
-
-			auto tmp1 = get_reg(line_stream, src_name, line_num);
-			if (std::get<1>(tmp1))
+			if (parse_reg(line_stream, src_name, line_num, code))
 				return Code();
-			code.push_int(std::get<0>(tmp1));
-
-			if (check_empty(line_stream, src_name, line_num))
-				return Code();
-
 
 		} else if (token == "onl") {
 			code.push_op(op::onl);
-
 			if (check_empty(line_stream, src_name, line_num))
 				return Code();
-
 
 		} else if (token == "jmp") {
 			code.push_op(op::jmp);
-
-			line_stream >> token;
-			label_refs[code.curr_index] = token;
-
-			code.push_int(-1);
-
-			if (check_empty(line_stream, src_name, line_num))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
 				return Code();
-
 
 		} else if (token == "jgt") {
 			code.push_op(op::jgt);
-
-			line_stream >> token;
-			label_refs[code.curr_index] = token;
-
-			code.push_int(-1);
-
-			if (check_empty(line_stream, src_name, line_num))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
 				return Code();
-
 
 		} else if (token == "jeq") {
 			code.push_op(op::jeq);
-
-			line_stream >> token;
-			label_refs[code.curr_index] = token;
-
-			code.push_int(-1);
-
-			if (check_empty(line_stream, src_name, line_num))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
 				return Code();
-
 
 		} else if (token == "jlt") {
 			code.push_op(op::jlt);
-
-			line_stream >> token;
-			label_refs[code.curr_index] = token;
-
-			code.push_int(-1);
-
-			if (check_empty(line_stream, src_name, line_num))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
 				return Code();
-
 
 		} else {
 			std::cerr << Error() << "Unkown instruction '" << token << "' in " <<
