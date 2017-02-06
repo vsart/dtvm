@@ -8,7 +8,7 @@ all:
 	@make dtvm
 
 dtvm: src/main.cpp $(OBJS)
-	$(CC) $(CF) -DVERSION='"0.0.1"' $^ -o $@
+	$(CC) $(CF) -DVERSION='"0.0.2"' $^ -o $@
 
 obj/args.o: src/args.cpp src/args.hpp
 	$(CC) $(CF) -c $< -o $@
