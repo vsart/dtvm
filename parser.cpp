@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include <tuple>
+#include <map>
 
 #include "error.hpp"
 
@@ -51,6 +52,9 @@ Code parse(std::ifstream& src, std::string& src_name)
 	int line_num = 0;
 	std::string line;
 
+	std::map<std::string, int64_t> label_dict;
+	std::map<int64_t, std::string> label_refs;
+
 	while (std::getline(src, line)) {
 		line_num++;
 
@@ -66,6 +70,13 @@ Code parse(std::ifstream& src, std::string& src_name)
 		if (token[0] == ';')
 			continue;
 
+		// Check if line is a label
+		if (token[0] == '@') {
+			// @TODO Check if label is already defined and don't allow
+			// substitutions.
+			label_dict[token] = code.curr_index;
+			continue;
+		}
 
 		if (token == "halt") {
 			code.push_op(op::halt);
@@ -134,15 +145,76 @@ Code parse(std::ifstream& src, std::string& src_name)
 				return Code();
 
 
+		} else if (token == "jmp") {
+			code.push_op(op::jmp);
+
+			line_stream >> token;
+			label_refs[code.curr_index] = token;
+
+			code.push_int(-1);
+
+			if (check_empty(line_stream, src_name, line_num))
+				return Code();
+
+
+		} else if (token == "jgt") {
+			code.push_op(op::jgt);
+
+			line_stream >> token;
+			label_refs[code.curr_index] = token;
+
+			code.push_int(-1);
+
+			if (check_empty(line_stream, src_name, line_num))
+				return Code();
+
+
+		} else if (token == "jeq") {
+			code.push_op(op::jeq);
+
+			line_stream >> token;
+			label_refs[code.curr_index] = token;
+
+			code.push_int(-1);
+
+			if (check_empty(line_stream, src_name, line_num))
+				return Code();
+
+
+		} else if (token == "jlt") {
+			code.push_op(op::jlt);
+
+			line_stream >> token;
+			label_refs[code.curr_index] = token;
+
+			code.push_int(-1);
+
+			if (check_empty(line_stream, src_name, line_num))
+				return Code();
+
+
 		} else {
-			std::cerr << Error() << "Unkown instruction '" << token << "' in " << src_name <<
-				" at line " << line_num << std::endl;
+			std::cerr << Error() << "Unkown instruction '" << token << "' in " <<
+				src_name << '.' << line_num << std::endl;
 			return Code();
 		}
 	}
 
 	// Push a halt at the end
 	code.push_op(op::halt);
+
+	for (auto &ref : label_refs) {
+		const auto index_to_change = ref.first;
+		const auto referenced_label = ref.second;
+		const auto find_result = label_dict.find(referenced_label);
+		if (find_result == label_dict.end()) {
+			// @TODO Add information about where this label was used
+			std::cerr << Error() << "Unknown label " << referenced_label << std::endl;
+			return Code();
+		}
+		const auto referenced_index = find_result->second;
+		code.change(index_to_change, var(referenced_index));
+	}
 
 	return code;
 }

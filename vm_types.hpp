@@ -35,8 +35,6 @@ enum class op {
 	jeq,  // Jump to label if last comparison was `true` for `=`
 	jlt,  // Jump to label if last comparison was `true` for `<`
 };
-
-// Implement the "<<" ostream operator for op
 std::ostream &operator<<(std::ostream &os, op const &o);
 
 
@@ -88,8 +86,6 @@ public:
 	double as_float() const { return value.f; };
 	op as_op() const { return value.o; };
 };
-
-// Implement the "<<" ostream operator for 'var'
 std::ostream &operator<<(std::ostream &os, var const &v);
 
 
@@ -102,6 +98,7 @@ public:
 
 	Code() : data(std::vector<var>()), curr_index(0) {};
 
+	void change(int i, const var &v) { data[i] =  v; };
 
 	void push_op(op o) {
 		curr_index++;
@@ -119,7 +116,6 @@ public:
 
 	void display() const {
 		auto it = data.begin();
-		it++;
 
 		while (true) {
 			if (it == data.end()) {
