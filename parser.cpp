@@ -36,6 +36,10 @@ bool check_empty(std::stringstream &ss, const std::string &sn, const int &ln)
 {
 	std::string token;
 	if (ss >> token) {
+		// Allow comments
+		if (token[0] == ';')
+			return false;
+
 		std::cerr << Error() << "Expected newline but found '" << token << "' in " <<
 			sn << '.' << ln << std::endl;
 		return true;
