@@ -35,13 +35,13 @@ push    r1
 pop     r1
         Pops the top of the stack into r1
 
-add
+add     r1      r2
         Adds value of r1 to r2
-sub
+sub     r1      r2
         Subtracts value of r1 from r2
-mul
+mul     r1      r2
         Multiplies value of r2 by r1
-div
+div     r1      r2
         Divides r2 by r1
 
 mod     r1      r2
