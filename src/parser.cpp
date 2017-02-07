@@ -199,7 +199,7 @@ bool parse_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code
 // @arg m  - Map to store the information regarding the label reference
 // @ret - Returns true if there was an error.
 bool parse_lab(std::stringstream &ss ,const std::string &sn, const int &ln, Code &c,
-			   std::map<int64_t, std::string> &m)
+               std::map<int64_t, std::string> &m)
 {
 	std::string token;
 	ss >> token;
@@ -361,7 +361,7 @@ Code parse(std::ifstream& src, std::string& src_name)
 
 		} else {
 			std::cerr << Error() << "Unkown instruction '" << token << "' in " <<
-				src_name << '.' << line_num << std::endl;
+			             src_name << '.' << line_num << std::endl;
 			return Code();
 		}
 	}
