@@ -4,6 +4,14 @@
 #include "var.hpp"
 
 
+// Default constructor
+var::var()
+	: type(var_type::integer)
+{
+	value.i = 0;
+}
+
+
 // Integer constructor
 var::var(int64_t i)
 	: type(var_type::integer)

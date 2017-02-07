@@ -27,8 +27,7 @@ private:
 	} value;
 
 public:
-	var() = delete;
-
+	var();
 	var(int64_t i);
 	var(double f);
 	var(const op o);

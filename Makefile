@@ -1,7 +1,7 @@
 CC = clang++
-CF = -O2 -g -march=native -Wall -Wextra -Wold-style-cast -Wpedantic -Werror -std=c++1z -fno-rtti -fno-omit-frame-pointer
+CF = -O3 -g -march=native -Wall -Wextra -Wold-style-cast -Wpedantic -Werror -std=c++1z -fno-rtti -fno-omit-frame-pointer
 
-OBJS=obj/args.o obj/parser.o obj/error.o obj/op.o obj/var.o obj/code.o
+OBJS=obj/args.o obj/parser.o obj/error.o obj/op.o obj/var.o obj/code.o obj/vm.o
 
 all:
 	@mkdir -p obj
@@ -26,6 +26,9 @@ obj/code.o: src/code.cpp src/code.hpp obj/op.o obj/var.o
 	$(CC) $(CF) -c $< -o $@
 
 obj/error.o: src/error.cpp src/error.hpp obj/args.o
+	$(CC) $(CF) -c $< -o $@
+
+obj/vm.o: src/vm.cpp src/vm.hpp obj/vm.o obj/var.o
 	$(CC) $(CF) -c $< -o $@
 
 clean:

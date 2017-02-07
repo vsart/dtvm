@@ -6,13 +6,13 @@
 #include <string>
 
 #include "args.hpp"
-#include "code.hpp"
 #include "error.hpp"
 #include "parser.hpp"
+#include "vm.hpp"
 
 
 #ifndef VERSION
-#error No version was defined during the compilation process
+#define VERSION "dev"
 #endif
 
 
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
 		// Parse code
 		auto code = parse(file, file_path);
-		if (code.curr_index == 0) {
+		if (code.size() == 0) {
 			std::cerr << Error() << "Got invalid code from parser" << std::endl;
 			return 1;
 		}
@@ -67,8 +67,8 @@ int main(int argc, char **argv)
 			return 0;
 		}
 
-		// Run the code in the VM.
-		std::cout << Error() << "The VM is not yet implemented" << std::endl;
+		// Run the code in the VM
+		execute(code);
 	}
 
 	return 0;

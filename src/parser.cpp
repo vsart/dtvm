@@ -11,6 +11,8 @@
 
 #include "error.hpp"
 
+// @TODO Change the uses of tuple to pairs in this file
+
 
 // get_int
 // Tries to get an integer from the stringstream and prints out an error on failure.
@@ -203,7 +205,7 @@ bool parse_lab(std::stringstream &ss ,const std::string &sn, const int &ln, Code
 {
 	std::string token;
 	ss >> token;
-	m[c.curr_index] = token;
+	m[c.size()] = token;
 
 	// Add a filler
 	c.push_int(-1);
@@ -252,7 +254,7 @@ Code parse(std::ifstream& src, std::string& src_name)
 		// Check if line is a label
 		if (token[0] == '@') {
 			// @TODO Check if label is already defined and don't allow substitutions.
-			label_dict[token] = code.curr_index;
+			label_dict[token] = code.size();
 			continue;
 		}
 
@@ -383,7 +385,7 @@ Code parse(std::ifstream& src, std::string& src_name)
 			return Code();
 		}
 		const auto referenced_index = find_result->second;
-		code.change(index_to_change, var(referenced_index));
+		code[index_to_change] = referenced_index;
 	}
 
 	return code;

@@ -6,41 +6,49 @@
 
 // Empty constructor
 Code::Code()
-	: data(std::vector<var>()), curr_index(0)
+	: data(std::vector<var>())
 {};
 
 
-// Change the value of code at index `at` to v
-void Code::change(int at, const var &v)
-{
-	data[at] =  v;
-}
-
-
 // Append an instruction to the code
-void Code::push_op(op o) {
-	curr_index++;
+void Code::push_op(op o)
+{
 	data.push_back(var(o));
 }
 
 
 // Append an integer to the code
-void Code::push_int(int64_t i) {
-	curr_index++;
+void Code::push_int(int64_t i)
+{
 	data.push_back(var(i));
 }
 
 
 // Append a floating point value to the code
-void Code::push_float(double f) {
-	curr_index++;
+void Code::push_float(double f)
+{
 	data.push_back(var(f));
+}
+
+
+// Add a shortcut to access the data member
+var& Code::operator[](int idx)
+{
+	return data[idx];
+}
+
+
+// Add a shortcut to get data size
+size_t Code::size() const
+{
+	return data.size();
 }
 
 
 // Pretty prints the code to stdout
 // @TODO: Change this to ostream &operator<< method
-void Code::display() const {
+void Code::display() const
+{
 	auto it = data.begin();
 
 	while (true) {
