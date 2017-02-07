@@ -1,0 +1,47 @@
+; Test noop
+noop
+noop
+
+; Test cfl
+cfl     2.5      0
+cfl     1.5      1
+
+; Test outputs
+ofv     0
+ofv     1
+onl
+
+; Test integer arithmetic and mov
+mov     1       2
+add     0       2
+ofv     2
+onl
+mov     1       2
+sub     0       2
+ofv     2
+onl
+mov     1       2
+mul     0       2
+ofv     2
+onl
+mov     1       2
+div     0       2
+ofv     2
+onl
+
+; Test pushing and popping
+push    0
+push    1
+pop     3
+ofv     3
+pop     3
+ofv     3
+onl
+
+; Output should be
+; 2.5 1.5
+; 4
+; -1.0
+; 3.75
+; 0.6
+; 1.5 2.5

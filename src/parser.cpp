@@ -255,6 +255,9 @@ Code parse(std::ifstream& src, std::string& src_name)
 		if (token[0] == '@') {
 			// @TODO Check if label is already defined and don't allow substitutions.
 			label_dict[token] = code.size();
+			// Make sure line is empty after label
+			if (check_empty(line_stream, src_name, line_num))
+				return Code();
 			continue;
 		}
 

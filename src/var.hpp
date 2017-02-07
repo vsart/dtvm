@@ -28,6 +28,7 @@ private:
 
 public:
 	var();
+	var(int i);
 	var(int64_t i);
 	var(double f);
 	var(const op o);

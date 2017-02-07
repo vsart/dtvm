@@ -1,9 +1,0 @@
-; This code does nothing
-
-noop
-noop
-
-halt
-
-; Let's add another halt just to be safe
-halt

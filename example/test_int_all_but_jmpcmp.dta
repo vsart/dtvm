@@ -1,0 +1,52 @@
+; Test noop
+noop
+noop
+
+; Test cil
+cil     40      0
+cil     50      1
+
+; Test outputs
+ofv     0
+ofv     1
+onl
+
+; Test integer arithmetic and mov
+mov     1       2
+add     0       2
+ofv     2
+onl
+mov     1       2
+sub     0       2
+ofv     2
+onl
+mov     1       2
+mul     0       2
+ofv     2
+onl
+mov     1       2
+div     0       2
+ofv     2
+onl
+mov     1       2
+mod     0       2
+ofv     2
+onl
+
+; Test pushing and popping
+push    0
+push    1
+pop     3
+ofv     3
+pop     3
+ofv     3
+onl
+
+; Output should be
+; 40 50
+; 90
+; 10
+; 2000
+; 1
+; 10
+; 50 40

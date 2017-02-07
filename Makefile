@@ -28,7 +28,7 @@ obj/code.o: src/code.cpp src/code.hpp obj/op.o obj/var.o
 obj/error.o: src/error.cpp src/error.hpp obj/args.o
 	$(CC) $(CF) -c $< -o $@
 
-obj/vm.o: src/vm.cpp src/vm.hpp obj/vm.o obj/var.o
+obj/vm.o: src/vm.cpp src/vm.hpp obj/var.o
 	$(CC) $(CF) -c $< -o $@
 
 clean:

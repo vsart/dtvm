@@ -1,0 +1,14 @@
+cfl     1.5     0
+cil     2       1
+
+ofv     0
+ofv     1
+
+mov     0       1 ; Overwrite the integer 2 with 1.5
+ofv     1
+onl
+
+halt
+
+; Output should be
+; 1.5 2 1.5

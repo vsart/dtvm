@@ -12,7 +12,12 @@ var::var()
 }
 
 
-// Integer constructor
+// Integer constructors
+var::var(int i)
+	: type(var_type::integer)
+{
+	value.i = i;
+}
 var::var(int64_t i)
 	: type(var_type::integer)
 {
