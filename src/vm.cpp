@@ -17,7 +17,7 @@ enum state_flag {
 };
 
 
-void execute([[maybe_unused]] Code code)
+void execute(Code code)
 {
     std::stack<var> stack;
     std::stack<size_t> callstack;

@@ -21,6 +21,10 @@ Options:
         j** instructions hold the index to be jumped to as their
         arguments.
 
+        -r8 | -r16 | -r32
+        Sets the number of registers of the VM to 8, 16 and 32
+        respectively.
+
 2. Instructions
 
 halt
@@ -70,6 +74,14 @@ jeq     lab
         Jumps to label lab last comparison was `true` for `=`
 jlt     lab
         Jumps to label lab last comparison was `true` for `<`
+
+call    lab
+        Jumps to label lab pushing the address of the next
+        instruction into the callstack.
+ret
+        Jumps to the address at the top of the callstack and
+        pops it.
+
 
 3. Labels and Comments
 
