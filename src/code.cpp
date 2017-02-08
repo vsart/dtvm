@@ -8,46 +8,46 @@
 
 // Empty constructor
 Code::Code()
-	: data(std::vector<var>()), entry_point(-1)
+	: code(std::vector<var>()), data(std::vector<std::string>()), entry_point(-1)
 {};
 
 
 // Append an instruction to the code
 void Code::push_op(op o)
 {
-	data.push_back(var(o));
+	code.push_back(var(o));
 }
 
 
 // Append an integer to the code
 void Code::push_int(int64_t i)
 {
-	data.push_back(var(i));
+	code.push_back(var(i));
 }
 
 
 // Append a floating point value to the code
 void Code::push_float(double f)
 {
-	data.push_back(var(f));
+	code.push_back(var(f));
 }
 
 
 // Add a shortcut to access the data member
 var& Code::operator[](int idx)
 {
-	return data[idx];
+	return code[idx];
 }
 var Code::operator[](int idx) const
 {
-	return data[idx];
+	return code[idx];
 }
 
 
 // Add a shortcut to get data size
 size_t Code::size() const
 {
-	return data.size();
+	return code.size();
 }
 
 
@@ -175,6 +175,13 @@ std::ostream &operator<<(std::ostream &o, const Code &c)
 			std::cout << c[it].as_op() << '\t';
 			it++;
 			std::cout << c[it].as_float() << '\t';
+			it++;
+			std::cout << c[it].as_int();
+			it++;
+			break;
+
+		case op::ods:
+			std::cout << c[it].as_op() << '\t';
 			it++;
 			std::cout << c[it].as_int();
 			it++;

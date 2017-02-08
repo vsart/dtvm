@@ -35,6 +35,7 @@ See the LICENSE file for further details.
 `mod`² | r1 r2  | Modulo operation of r2 by r1
 `cil`  | lit r2 | Sets the value of r2 to match the integer literal lit
 `cfl`  | lit r2 | Sets the value of r2 to match the floating point literal lit
+`ods`  | lab    | Prints the constant string represented by lab.
 `ofv`  | r1     | Output formatted value of r1 to stdout
 `onl`  | None   | Print newline and flush stdout
 `cmp`¹ | r1 r2  | Compare r1 and r2
@@ -49,7 +50,7 @@ See the LICENSE file for further details.
 ¹ Fails if the operands don't have the same type <br>
 ² Fails if the operands aren't both integers
 
-## 3. Labels and Comments
+## 3. Comments about the assembly
 
 Comments start with ';', and they can either start at the beginning
 of a line or in the end of a line after a full instruction (the
@@ -66,5 +67,8 @@ through command line options.
 
 Also, any label `.lab` starting with a dot is considered a sublabel and is expanded to `cl.lab`,
 where `cl` is the context label, that being the last non-sublabel label read in the file.
+
+Constant strings can be defined using the syntax `data string_name "string"`. They must be defined
+before any reference to that string happens.
 
 In general, see the examples folder for examples.

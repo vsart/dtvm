@@ -173,6 +173,11 @@ void execute(Code code)
             pc += 2;
             break;
 
+        case op::ods:
+            std::cout << code.data[code[pc+1].as_int()];
+            pc += 1;
+            break;
+
         case op::ofv:
             std::cout << reg[code[pc+1].as_int()] << ' ';
             pc += 1;

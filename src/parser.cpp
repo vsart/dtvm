@@ -202,7 +202,7 @@ bool parse_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code
 // @arg c  - Code object to push the parsed values into
 // @arg m  - Map to store the information regarding the label reference
 // @ret - Returns true if there was an error.
-bool parse_lab(std::stringstream &ss ,const std::string &sn, const int &ln, Code &c,
+bool parse_lab(std::stringstream &ss, const std::string &sn, const int &ln, Code &c,
                std::map<int64_t, std::pair<int, std::string>> &m, const std::string &cl)
 {
 	std::string token;
@@ -223,6 +223,40 @@ bool parse_lab(std::stringstream &ss ,const std::string &sn, const int &ln, Code
 }
 
 
+// gfc
+// Gets a formatted character from the stringstream
+// @arg ss - The stringstream
+// @arg sn - File name for error reporting
+// @arg ln - Line number for error reporting
+// @ret (Character, Was there any error?)
+std::pair<char, bool> gfc(std::stringstream &ss, const std::string &sn, const int &ln)
+{
+	char ch;
+	ch = ss.get();
+	if (ss.fail())
+		return std::pair<char, bool>('\0', true);
+	if (ch == '\\') {
+		ch = ss.get();
+		if (ss.fail()) {
+			std::cerr << Error() << "Expected \\ expansion at " << sn << '.' << ln <<
+				"but found EOL instead." << std::endl;
+			return std::pair<char, bool>('\0', true);
+		}
+		switch (ch) {
+		case 't':
+			return std::pair<char, bool>('\t', false);
+		case 'n':
+			return std::pair<char, bool>('\n', false);
+		default:
+			std::cerr << Error() << "Expected valid \\ expansion at " << sn << '.' << ln <<
+				"but found invalid expanding character '" << ch << "'" << std::endl;
+			return std::pair<char, bool>(ch, true);
+		}
+	}
+	return std::pair<char, bool>(ch, false);
+}
+
+
 // parse
 // @exported
 // Parses the source file into a Code object
@@ -231,8 +265,6 @@ bool parse_lab(std::stringstream &ss ,const std::string &sn, const int &ln, Code
 // @ret - The Code object. An empty Code object is returned on error.
 Code parse(std::ifstream& src, std::string& src_name)
 {
-	// Rely that src is opened and at the proper point
-
 	Code code;
 	int line_num = 0;
 	std::string line;
@@ -244,6 +276,9 @@ Code parse(std::ifstream& src, std::string& src_name)
 	// Holds the index the label reference appears mapping to the line number it appear and to the
 	// name of the label referenced
 	std::map<int64_t, std::pair<int, std::string>> label_refs;
+
+	// Holds the name of a string and its index
+	std::map<std::string, int> data_dict;
 
 	while (std::getline(src, line)) {
 		line_num++;
@@ -260,6 +295,45 @@ Code parse(std::ifstream& src, std::string& src_name)
 		// The other possibility of a comment is handled by `check_empty`
 		if (token[0] == ';')
 			continue;
+
+
+		// Check if it's a constant string
+		if (token == "data") {
+			line_stream >> token;
+			// Check if string_name already exists
+			auto const find = data_dict.find(token);
+			if (find != data_dict.end()) {
+				std::cout << Error() << "Invalid string redefinition at " << src_name << '.' <<
+					line_num << std::endl;
+				return Code();
+			}
+			data_dict[token] = code.data.size();
+
+			// Make sure next character is a "
+			char ch_token;
+			line_stream >> ch_token;
+			if (ch_token != '"') {
+				std::cout << Error() << "Expected '\"' but found " << ch_token << " at " <<
+					src_name << '.' << line_num << std::endl;
+				return Code();
+			}
+
+			auto tmp = gfc(line_stream, src_name, line_num);
+			std::ostringstream new_data;
+			while (!tmp.second && tmp.first != '"') {
+				new_data << tmp.first;
+				tmp = gfc(line_stream, src_name, line_num);
+			}
+			if (tmp.second) {
+				std::cerr << Error() << "Failed to parse string at " << src_name << '.' <<
+					line_num << std::endl;
+			}
+			code.data.push_back(new_data.str());
+			// Make sure line is empty
+			if (check_empty(line_stream, src_name, line_num))
+				return Code();
+			continue;
+		}
 
 		// Check if line is a label
 		if (token.back() == ':') {
@@ -278,7 +352,7 @@ Code parse(std::ifstream& src, std::string& src_name)
 				context_label = label_name;
 			}
 			// Check for label redefinitions
-			auto tmp = label_dict.find(label_name);
+			auto const tmp = label_dict.find(label_name);
 			if (tmp != label_dict.end()) {
 				std::cout << Error() << "Invalid label redefinition at " << src_name << '.' <<
 					line_num << std::endl;
@@ -364,6 +438,20 @@ Code parse(std::ifstream& src, std::string& src_name)
 		} else if (token == "cfl") {
 			code.push_op(op::cfl);
 			if (parse_flt_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "ods") {
+			code.push_op(op::ods);
+			line_stream >> token;
+			// Attempt to find token in data dict
+			if (data_dict.find(token) == data_dict.end()) {
+				std::cerr << Error() << "Undefined data label '" << token << "' at " <<
+					src_name << '.' << line_num << std::endl;
+				return Code();
+			} else {
+				code.push_int(data_dict.find(token)->second);
+			}
+			if (check_empty(line_stream, src_name, line_num))
 				return Code();
 
 		} else if (token == "ofv") {

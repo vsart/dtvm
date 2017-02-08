@@ -27,6 +27,7 @@ enum class op {
 	cil,  // Copy integer literal to r1
 	cfl,  // Copy floating point literal to r1
 
+	ods,  // Outputs data string of label lab
 	ofv,  // Output formated value of r1 to stdout
 	onl,  // Output a newline to stdout and flush it
 

@@ -1,0 +1,73 @@
+data    welcome     "Welcome to FizzBuzz Enterprise v1.0"
+data    part1       "\t1\n\t2\n\tFizz\n\t4\n\tBuzz"
+data    part2       "\n\tFizz\n\t7\n\t8\n\tFizz\n\tBuzz"
+data    part3       "\n\t11\n\tFizz\n\t13\n\t14\n\tFizzBuzz"
+data    tab         "\t"
+data    fizz        "Fizz"
+data    buzz        "Buzz"
+
+_start:
+; Welcome prompt
+ods     welcome
+onl
+onl
+
+; Optimized part!!1!1!!
+ods     part1
+ods     part2
+ods     part3
+onl
+
+; Non-optimized part :(
+fizzBuzz:
+cil     15      0 ; Counter
+cil     15      1 ; const
+cil     3       2 ; const
+cil     5       3 ; const
+cil     101     5 ; const
+.step:
+inc     0
+
+cmp     0       5
+jeq     exit
+
+ods     tab
+
+; Check if multiple of 15 (r1)
+mov     0       4
+mod     1       4
+cmpz    4
+jeq     .fizzBuzz
+; Check if multiple of 3 (r2)
+mov     0       4
+mod     2       4
+cmpz    4
+jeq     .fizz
+; Check if multiple of 5 (r3)
+mov     0       4
+mod     3       4
+cmpz    4
+jeq     .buzz
+; Print the number
+ofv     0
+onl
+jmp     .step
+
+.fizz:
+ods     fizz
+onl
+jmp     .step
+
+.buzz:
+ods     buzz
+onl
+jmp     .step
+
+.fizzBuzz:
+ods     fizz
+ods     buzz
+onl
+jmp     .step
+
+exit:
+halt

@@ -35,6 +35,8 @@ std::ostream &operator<<(std::ostream &os, op const &o)
 		return os << "cil ";
 	case op::cfl:
 		return os << "cfl ";
+	case op::ods:
+		return os << "ods ";
 	case op::ofv:
 		return os << "ofv ";
 	case op::onl:

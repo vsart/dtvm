@@ -14,9 +14,11 @@
 
 class Code {
 private:
-	std::vector<var> data;
+	std::vector<var> code;
 
 public:
+	std::vector<std::string> data;
+
 	Code();
 
 	void push_op(op o);
