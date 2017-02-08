@@ -9,8 +9,6 @@
 #include "args.hpp"
 #include "error.hpp"
 
-// @TODO Wrap arithmetic operations of registers within overloaded operators instead
-
 
 enum state_flag {
     VM_FLAG_GT = 0b100,
