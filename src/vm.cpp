@@ -5,15 +5,16 @@
 
 #include <iostream>
 #include <stack>
+#include <limits>
 
 #include "args.hpp"
 #include "error.hpp"
 
 
 enum state_flag {
-    VM_FLAG_GT = 0b100,
-    VM_FLAG_EQ = 0b010,
-    VM_FLAG_LT = 0b001,
+    VM_FLAG_GT = 0b0100,
+    VM_FLAG_EQ = 0b0010,
+    VM_FLAG_LT = 0b0001,
 };
 
 
@@ -26,6 +27,10 @@ void execute(Code code)
 
     var a1, a2;
     var_type optype;
+
+    int8_t stdin_state = 0;
+    int64_t integer_token;
+    double floating_token;
 
     size_t pc;
     for (pc = code.entry_point; pc < code.size(); pc++) {
@@ -185,6 +190,37 @@ void execute(Code code)
 
         case op::onl:
             std::cout << std::endl;
+            break;
+
+        case op::iiv:
+            std::cin >> integer_token;
+            if (std::cin.fail()) {
+                stdin_state = 1;
+            } else {
+                stdin_state = 0;
+                reg[code[pc+1].as_int()] = integer_token;
+            }
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            pc += 1;
+            break;
+
+        case op::ifv:
+            std::cin >> floating_token;
+            if (std::cin.fail()) {
+                stdin_state = 1;
+            } else {
+                stdin_state = 0;
+                reg[code[pc+1].as_int()] = floating_token;
+            }
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            pc += 1;
+            break;
+
+        case op::ipf:
+            reg[code[pc+1].as_int()] = int64_t(stdin_state);
+            pc += 1;
             break;
 
         case op::cmp:

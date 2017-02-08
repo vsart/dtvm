@@ -41,6 +41,12 @@ std::ostream &operator<<(std::ostream &os, op const &o)
 		return os << "ofv ";
 	case op::onl:
 		return os << "onl ";
+	case op::iiv:
+		return os << "iiv ";
+	case op::ifv:
+		return os << "ifv ";
+	case op::ipf:
+		return os << "ipf ";
 	case op::cmp:
 		return os << "cmp ";
 	case op::cmpz:

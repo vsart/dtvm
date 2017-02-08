@@ -22,4 +22,10 @@ namespace dtvm_args {
 	// "-e<name>"
 	// Sets the entry point of the program to be the label <name>, by default it's start
 	extern std::string entry_point;
+	// "-debug"
+	// Executes with debug mode
+	extern bool debug;
+	// "-show-data"
+	// Also displays data section when printing parsed code
+	extern bool show_data;
 };

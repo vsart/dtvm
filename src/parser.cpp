@@ -464,6 +464,21 @@ Code parse(std::ifstream& src, std::string& src_name)
 			if (check_empty(line_stream, src_name, line_num))
 				return Code();
 
+		} else if (token == "iiv") {
+			code.push_op(op::iiv);
+			if (parse_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "ifv") {
+			code.push_op(op::ifv);
+			if (parse_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "ipf") {
+			code.push_op(op::ipf);
+			if (parse_reg(line_stream, src_name, line_num, code))
+				return Code();
+
 		} else if (token == "cmp") {
 			code.push_op(op::cmp);
 			if (parse_reg_reg(line_stream, src_name, line_num, code))

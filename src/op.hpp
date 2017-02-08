@@ -31,6 +31,10 @@ enum class op {
 	ofv,  // Output formated value of r1 to stdout
 	onl,  // Output a newline to stdout and flush it
 
+	iiv,  // Reads an integer value from stdin to r1
+	ifv,  // Reads a floating point value from stdin to r1
+	ipf,  // Prompts failure status of stdin into r1 (0 -> No failure)
+
 	cmp,  // Compare r1 and r2
 	cmpz, // Compare r1 to zero
 

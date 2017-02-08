@@ -4,6 +4,7 @@
 #include "code.hpp"
 
 #include "error.hpp"
+#include "args.hpp"
 
 
 // Empty constructor
@@ -56,13 +57,21 @@ std::ostream &operator<<(std::ostream &o, const Code &c)
 {
 	size_t it = 0;
 
+	if (dtvm_args::show_data) {
+		o << "SECTION data\n" << std::endl;
+		for (size_t i = 0; i < c.data.size(); i++)
+			o << i << ":\n" << c.data[i] << std::endl;
+
+		o << "\nSECTION code" << std::endl;
+	}
+
 	while (true) {
 		if (it >= c.size()) {
-			std::cout << std::endl;
+			o << std::endl;
 			return o;
 		}
 
-		std::cout << '\n' << it << ":\t";
+		o << '\n' << it << ":\t";
 
 		if (c[it].get_type() != var_type::operation) {
 			std::cerr << Error() << "Tried to display a non-op as op at " << it << std::endl;
@@ -70,188 +79,209 @@ std::ostream &operator<<(std::ostream &o, const Code &c)
 
 		switch (c[it].as_op()) {
 		case op::halt:
-			std::cout << c[it].as_op();
+			o << c[it].as_op();
 			it++;
 			break;
 
 		case op::noop:
-			std::cout << c[it].as_op();
+			o << c[it].as_op();
 			it++;
 			break;
 
 		case op::mov:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int() << '\t';
+			o << c[it].as_int() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::push:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::pop:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::inc:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 
 		case op::dec:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::add:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int() << '\t';
+			o << c[it].as_int() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::sub:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int() << '\t';
+			o << c[it].as_int() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::mul:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int() << '\t';
+			o << c[it].as_int() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::div:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int() << '\t';
+			o << c[it].as_int() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::mod:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int() << '\t';
+			o << c[it].as_int() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::cil:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int() << '\t';
+			o << c[it].as_int() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::cfl:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_float() << '\t';
+			o << c[it].as_float() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::ods:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::ofv:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::onl:
-			std::cout << c[it].as_op();
+			o << c[it].as_op();
+			it++;
+			break;
+
+		case op::iiv:
+			o << c[it].as_op() << '\t';
+			it++;
+			o << c[it].as_int();
+			it++;
+			break;
+
+		case op::ifv:
+			o << c[it].as_op() << '\t';
+			it++;
+			o << c[it].as_int();
+			it++;
+			break;
+
+		case op::ipf:
+			o << c[it].as_op() << '\t';
+			it++;
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::cmp:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int() << '\t';
+			o << c[it].as_int() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::cmpz:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::jmp:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::jgt:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::jeq:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::jlt:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::call:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
-			std::cout << c[it].as_int();
+			o << c[it].as_int();
 			it++;
 			break;
 
 		case op::ret:
-			std::cout << c[it].as_op() << '\t';
+			o << c[it].as_op() << '\t';
 			it++;
 			break;
 		}

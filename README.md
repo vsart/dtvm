@@ -16,6 +16,8 @@ See the LICENSE file for further details.
 | -parse-and-print | Makes it so the application only parses the code and print the interpreted version <br> to the stdout, not executing it. The only difference between the printed code from <br> the source is that there are no empty lines, labels or comments, and j** instructions <br> hold the index to be jumped to as their arguments. |
 | -r8 <br> -r16 <br> -r32 | Sets the number of registers of the VM to 8, 16 and 32 respectively. |
 | -e`labname` | Sets the entry point of the program to be at label `labname` |
+| -show-data | Only takes effect if -parse-and-print was given.  Also displays strings with the code. |
+| -debug | Starts the VM into debugging mode |
 
 ## 2. Instructions
 
@@ -38,6 +40,9 @@ See the LICENSE file for further details.
 `ods`  | lab    | Prints the constant string represented by lab.
 `ofv`  | r1     | Output formatted value of r1 to stdout
 `onl`  | None   | Print newline and flush stdout
+`iiv`  | r1     | Reads integer value from stdin into r1.
+`ifv`  | r1     | Reads floating point value from stdin into r1.
+`ipf`  | r1     | Prompts failure on reading inputs onto r1. <br> r1 receives =0 for no error and >0 for error.
 `cmp`¹ | r1 r2  | Compare r1 and r2
 `cmpz` | r1     | Compare r1 to the appropriate zero
 `jmp`  | lab    | Jumps uncoditionally to label lab

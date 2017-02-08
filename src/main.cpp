@@ -45,11 +45,19 @@ int main(int argc, char **argv)
 				dtvm_args::num_regs = 16;
 			else if (arg == "-r32")
 				dtvm_args::num_regs = 32;
+			else if (arg == "-debug")
+				dtvm_args::debug = true;
+			else if (arg == "-show-data")
+				dtvm_args::show_data = true;
 			else if (arg.substr(0,2) == "-e")
 				dtvm_args::entry_point = arg.substr(2, arg.length());
 			else
 				std::cout << Warn() << "Unknown option '" << argv[i] << "'" << std::endl;
 		}
+
+		// @TODO Add debugger mode to VM
+		if (dtvm_args::debug)
+			std::cout << Warn() << "Debugger not yet implemented" << std::endl;
 
 		// Attempt to open file
 		std::string file_path(argv[1]);

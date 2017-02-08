@@ -1,0 +1,116 @@
+data    menu1           "Do you want to:\n1. Add\n2. Subtract\n3. Multiply\n4. Divide\n"
+data    invnum          "Invalid number. Pick again.\n"
+data    youpick         "You picked option "
+data    promptvalues    "Enter the first and second values\n"
+data    result          "The result is "
+data    bug             "There is a bug in the program!"
+
+;;;;;; in_range{T}(a, b, c T) -> int
+;;;;;;   ret (b <= a <= c) ? 0 : 1
+in_range:
+; Checks if arg0 is between arg1 and arg2
+; Returns >0 if false, =0 if true
+pop     0
+pop     1
+pop     2
+cmp     0       1
+jlt     .fail
+cmp     0       2
+jgt     .fail
+cil     0       0
+ret
+.fail:
+cil     1       0
+ret
+
+_start:
+ods     menu1
+.menu1:
+iiv     0
+ipf     1
+cmpz    1
+jgt     .menu1_error
+
+; Check if value is within range
+push    0
+cil     4       7
+push    7
+cil     1       7
+push    7
+push    0
+call    in_range
+cmpz    0
+jgt     .menu1_error
+pop     0
+
+ods     youpick
+ofv     0
+onl
+jmp     get_values
+
+.menu1_error:
+ods     invnum
+jmp     .menu1
+
+; Get the floating pointing operands
+; Remember that r0 stores the operation choice
+get_values:
+
+ods     promptvalues
+ifv     1
+ipf     7
+cmpz    7
+jgt     .error
+ifv     2
+ipf     7
+cmpz    7
+jgt     .error
+jmp     choose_op
+
+.error:
+ods     invnum
+jmp     get_values
+
+; Decreasing until finding the correct path
+choose_op:
+dec     0
+cmpz    0
+jeq     add
+dec     0
+cmpz    0
+jeq     sub
+dec     0
+cmpz    0
+jeq     mul
+dec     0
+cmpz    0
+jeq     div
+; If we get here there was a bug
+ods     bug
+halt
+
+; Addition path
+add:
+add     2       1
+jmp     end
+
+; Subtraction path
+sub:
+sub     2       1
+jmp     end
+
+; Multiplication path
+mul:
+mul     2       1
+jmp     end
+
+; Division path
+div:
+div     2       1
+jmp     end
+
+; Show result
+end:
+ods     result
+ofv     1
+onl
