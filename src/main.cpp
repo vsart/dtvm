@@ -26,10 +26,10 @@ int main(int argc, char **argv)
 		return 1;
 	} else {
 		// Before anything, check if this is a version invocation
-		// @TODO Also add license when there is a license
 		if (std::string(argv[1]) == "version") {
-			std::cout << "DTVM version " << VERSION << "\n" <<
-				"by Victhor S. Sartório" << std::endl;
+			std::cout << "DTVM version " << VERSION << " - Copyright (C) Victhor S. Sartório\n" <<
+				"Licensed under the MIT License. See distributed LICENSE file for details." <<
+				std::endl;
 			return 0;
 		}
 
