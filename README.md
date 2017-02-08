@@ -15,6 +15,7 @@ See the LICENSE file for further details.
 | -no-acc <br> -no-ansi-color-codes |  Tells the application not to use ANSI color codes on outputs. |
 | -parse-and-print | Makes it so the application only parses the code and print the interpreted version <br> to the stdout, not executing it. The only difference between the printed code from <br> the source is that there are no empty lines, labels or comments, and j** instructions <br> hold the index to be jumped to as their arguments. |
 | -r8 <br> -r16 <br> -r32 | Sets the number of registers of the VM to 8, 16 and 32 respectively. |
+| -e`labname` | Sets the entry point of the program to be at label `labname` |
 
 ## 2. Instructions
 
@@ -59,5 +60,8 @@ A label declaration needs to end with `:` and not contain any whitespace charact
 When referencing the label in a j** instruction, the last `:` should be removed.
 Since a `halt` instruction is always added to the end of the code, a label declared in the end of
 a file will reference a `halt` instruction.
+
+The program starts execution on the entry point label, which defaults to `_start`, but can be set
+through command line options.
 
 In general, see the examples folder for examples.

@@ -8,7 +8,7 @@
 
 // Empty constructor
 Code::Code()
-	: data(std::vector<var>())
+	: data(std::vector<var>()), entry_point(-1)
 {};
 
 

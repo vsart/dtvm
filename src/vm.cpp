@@ -28,7 +28,7 @@ void execute(Code code)
     var_type optype;
 
     size_t pc;
-    for (pc = 0; pc < code.size(); pc++) {
+    for (pc = code.entry_point; pc < code.size(); pc++) {
         const auto op = code[pc].as_op();
 
         if (code[pc].get_type() != var_type::operation) {

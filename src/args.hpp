@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <string>
+
 
 // This namespace holds argument variables globally
 // They should only be written to during the initialization phase of `main`.
@@ -17,4 +19,7 @@ namespace dtvm_args {
 	// "-r8" or "-r16" or "-r32"
 	// Number of registers for the VM
 	extern int num_regs;
+	// "-e<name>"
+	// Sets the entry point of the program to be the label <name>, by default it's start
+	extern std::string entry_point;
 };

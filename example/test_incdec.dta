@@ -1,6 +1,7 @@
 
 ; Test for integer
 
+_start:
 cil     0       0       ; Int64
 cil     -2      1       ; const
 cil     2       2       ; const

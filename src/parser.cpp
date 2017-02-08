@@ -261,7 +261,10 @@ Code parse(std::ifstream& src, std::string& src_name)
 				std::cout << Error() << "Invalid label redefinition at " << src_name << '.' <<
 					line_num << std::endl;
 			}
-			label_dict[token.substr(0, token.length()-1)] = code.size();
+			auto const label_name = token.substr(0, token.length() - 1);
+			label_dict[label_name] = code.size();
+			if (label_name == dtvm_args::entry_point)
+				code.entry_point = code.size();
 			// Make sure line is empty after label
 			if (check_empty(line_stream, src_name, line_num))
 				return Code();
@@ -402,6 +405,12 @@ Code parse(std::ifstream& src, std::string& src_name)
 	// 1. This avoids empty Code object when an empty source is given
 	// 2. This makes it so a label at the end of a file points to something meaningful
 	code.push_op(op::halt);
+
+	if (code.entry_point < 0) {
+		std::cerr << Error() << "The entry point label '" << dtvm_args::entry_point  <<
+			"' was not found." << std::endl;
+		return Code();
+	}
 
 	// Go thorugh label references and use the label dictionary to substitute the proper
 	// 'addresses' where they were referenced.

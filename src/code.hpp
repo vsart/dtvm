@@ -27,6 +27,8 @@ public:
 	var operator[](int idx) const;
 
 	size_t size() const;
+
+	int entry_point;
 };
 
 std::ostream &operator<<(std::ostream &o, const Code &c);

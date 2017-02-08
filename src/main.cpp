@@ -45,6 +45,8 @@ int main(int argc, char **argv)
 				dtvm_args::num_regs = 16;
 			else if (arg == "-r32")
 				dtvm_args::num_regs = 32;
+			else if (arg.substr(0,2) == "-e")
+				dtvm_args::entry_point = arg.substr(2, arg.length());
 			else
 				std::cout << Warn() << "Unknown option '" << argv[i] << "'" << std::endl;
 		}

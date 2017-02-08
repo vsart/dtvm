@@ -7,3 +7,4 @@
 bool dtvm_args::no_ansi_color_codes = false;
 bool dtvm_args::parse_and_print = false;
 int dtvm_args::num_regs = 16;
+std::string dtvm_args::entry_point = "_start";
