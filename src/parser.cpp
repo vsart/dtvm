@@ -255,13 +255,13 @@ Code parse(std::ifstream& src, std::string& src_name)
 			continue;
 
 		// Check if line is a label
-		if (token[0] == '@') {
+		if (token.back() == ':') {
 			auto tmp = label_dict.find(token);
 			if (tmp != label_dict.end()) {
 				std::cout << Error() << "Invalid label redefinition at " << src_name << '.' <<
 					line_num << std::endl;
 			}
-			label_dict[token] = code.size();
+			label_dict[token.substr(0, token.length()-1)] = code.size();
 			// Make sure line is empty after label
 			if (check_empty(line_stream, src_name, line_num))
 				return Code();

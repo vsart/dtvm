@@ -5,18 +5,18 @@
 cfl     0.5     0
 cfl     1.5     1
 
-jmp     @skip_mod_error
+jmp     skip_mod_error
 
-@mod_error
+mod_error:
 mod     0       1
 
-@skip_mod_error
-jmp @section1
+skip_mod_error:
+jmp section1
 
 ; Now we set up a lot of jumps making it jump into an error for incorrect jumps and making it
 ; continue through the test for positive jumps
 
-@section1
+section1:
 cil     1       5
 ofv     5
 ; jlt is good
@@ -26,17 +26,17 @@ cfl     82.4    1
 
 cmp     0       1
 
-jgt     @mod_error1
-jeq     @mod_error1
-jlt     @section2
-jmp     @mod_error1
+jgt     mod_error1
+jeq     mod_error1
+jlt     section2
+jmp     mod_error1
 
-@mod_error1
+mod_error1:
 cfl     0.5     0
 cfl     1.5     1
 mod     0       1
 
-@section2
+section2:
 cil     2       5
 ofv     5
 ; jeq is good
@@ -44,12 +44,12 @@ cil     0       3
 
 cmpz    3
 
-jlt     @mod_error
-jgt     @mod_error
-jeq     @section3
-jmp     @mod_error
+jlt     mod_error
+jgt     mod_error
+jeq     section3
+jmp     mod_error
 
-@section3
+section3:
 cil     3       5
 ofv     5
 ; jgt is good
@@ -57,12 +57,12 @@ ofv     5
 cfl     5.0     2
 cmpz    2
 
-jlt     @mod_error
-jeq     @mod_error
-jgt     @exit
-jmp     @mod_error
+jlt     mod_error
+jeq     mod_error
+jgt     exit
+jmp     mod_error
 
-@exit
+exit:
 onl
 ; Implicit halt
 

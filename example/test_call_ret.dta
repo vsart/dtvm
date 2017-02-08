@@ -4,13 +4,13 @@
 
 cil     14       0
 push    0
-call    @recursiveCall
+call    recursiveCall
 ofv     0
 onl
 halt
 
 ;;;;;;;;;;; defun recursiveCall
-@recursiveCall
+recursiveCall:
 ; Receives argument through the stack
 ; Returns through register 0
 
@@ -21,15 +21,15 @@ pop     0
 ;     (return r0))
 cil     1       1
 cmp     0       1
-jgt     @recursiveCall-dontReturn
+jgt     recursiveCall-dontReturn
 ret
-@recursiveCall-dontReturn
+recursiveCall-dontReturn:
 
 ; (return (* r0 (recursiveCall (- r0 1))))
 push    0
 dec     0
 push    0
-call    @recursiveCall
+call    recursiveCall
 pop     1
 mul     1       0
 ret

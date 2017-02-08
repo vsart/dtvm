@@ -54,9 +54,10 @@ Comments start with ';', and they can either start at the beginning
 of a line or in the end of a line after a full instruction (the
 instruction token and the arguments).
 
-Label declarations need to be alone in a line. Since a `halt`
-instruction is always added to the end of the code, a label declared
-in the end of a file will reference a `halt` instruction.
-A label needs to start with `@` and not contain any whitespace
-characters. When referencing the label in a j** instruction, the
-`@` should not be removed.
+Label declarations need to be alone in a line (comments after the declaration aren't counted).
+A label declaration needs to end with `:` and not contain any whitespace characters.
+When referencing the label in a j** instruction, the last `:` should be removed.
+Since a `halt` instruction is always added to the end of the code, a label declared in the end of
+a file will reference a `halt` instruction.
+
+In general, see the examples folder for examples.
