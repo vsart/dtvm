@@ -1,3 +1,4 @@
 dtvm
 obj
 *.o
+example/playground.dta

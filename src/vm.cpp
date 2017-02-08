@@ -6,15 +6,17 @@
 #include <iostream>
 #include <stack>
 
+#include "args.hpp"
 #include "error.hpp"
 
 // @TODO Wrap arithmetic operations of registers within overloaded operators instead
+
 
 void execute([[maybe_unused]] Code code)
 {
     std::stack<var> stack;
     std::stack<size_t> callstack;
-    var reg[8]; // @TODO Magic number :´(
+    std::vector<var> reg(dtvm_args::num_regs, var(0));
     // @TODO Optimize with bitops in just one uint8_t
     bool lt, eq, gt;
 

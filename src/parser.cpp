@@ -9,6 +9,7 @@
 #include <tuple>
 #include <map>
 
+#include "args.hpp"
 #include "error.hpp"
 
 // @TODO Change the uses of tuple to pairs in this file
@@ -41,12 +42,15 @@ std::tuple<int64_t, bool> get_int(std::stringstream &ss, const std::string &sn, 
 // @ret - Second value reports true if there was an error and the first on is the index
 //        number if the second value is false.
 std::tuple<int64_t, bool> get_reg(std::stringstream &ss, const std::string &sn, const int &ln) {
-	// @TODO Check if integer value is actually within range
 	int64_t integer_token;
 	ss >> integer_token;
 	if (ss.fail()) {
 		std::cerr << Error() << "Invalid register literal in " << sn << '.' << ln << std::endl;
 		return std::make_tuple(0, true);
+	}
+	if (integer_token < 0 || integer_token >= dtvm_args::num_regs) {
+		std::cerr << Error() << "Invalid register " << integer_token << " at " << sn << '.' <<
+		ln << ". Should be within range [0," << dtvm_args::num_regs <<  ')' << std::endl;
 	}
 	return std::make_tuple(integer_token, false);
 }

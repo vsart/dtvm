@@ -14,5 +14,7 @@ namespace dtvm_args {
 	// Makes it so the application only parses and pretty print the bytecode
 	// instead of also executing it
 	extern bool parse_and_print;
-	// @TODO Add specification of how many registers to have at the VM
+	// "-r8" or "-r16" or "-r32"
+	// Number of registers for the VM
+	extern int num_regs;
 };

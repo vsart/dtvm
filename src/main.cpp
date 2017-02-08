@@ -42,6 +42,12 @@ int main(int argc, char **argv)
 				dtvm_args::no_ansi_color_codes = true;
 			else if (arg == "-parse-and-print")
 				dtvm_args::parse_and_print = true;
+			else if (arg == "-r8")
+				dtvm_args::num_regs = 8;
+			else if (arg == "-r16")
+				dtvm_args::num_regs = 16;
+			else if (arg == "-r32")
+				dtvm_args::num_regs = 32;
 			else
 				std::cout << Warn() << "Unknown option '" << argv[i] << "'" << std::endl;
 		}
