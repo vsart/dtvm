@@ -15,6 +15,8 @@ enum class op {
 	push, // Push value from r1 to top of stack
 	pop,  // Pop value from top of stack to r1
 
+	inc,  // Increments value of r1
+	dec,  // Decrements value of r1
 	add,  // Add value of r1 to r2
 	sub,  // Subtract value of r1 from r2
 	mul,  // Multiply value of r2 by 41

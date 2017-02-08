@@ -17,6 +17,10 @@ std::ostream &operator<<(std::ostream &os, op const &o)
 		return os << "push";
 	case op::pop:
 		return os << "pop ";
+	case op::inc:
+		return os << "inc ";
+	case op::dec:
+		return os << "dec ";
 	case op::add:
 		return os << "add ";
 	case op::sub:

@@ -296,6 +296,16 @@ Code parse(std::ifstream& src, std::string& src_name)
 			if (parse_reg(line_stream, src_name, line_num, code))
 				return Code();
 
+		} else if (token == "inc") {
+			code.push_op(op::inc);
+			if (parse_reg(line_stream, src_name, line_num, code))
+				return Code();
+
+		} else if (token == "dec") {
+			code.push_op(op::dec);
+			if (parse_reg(line_stream, src_name, line_num, code))
+				return Code();
+
 		} else if (token == "add") {
 			code.push_op(op::add);
 			if (parse_reg_reg(line_stream, src_name, line_num, code))

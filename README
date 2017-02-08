@@ -39,6 +39,10 @@ push    r1
 pop     r1
         Pops the top of the stack into r1
 
+inc     r1
+        Increments the value of r1 by 1.
+dec     r1
+        Decrements the value of r1 by 1.
 add     r1      r2
         Adds value of r1 to r2
 sub     r1      r2

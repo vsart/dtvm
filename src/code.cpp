@@ -102,6 +102,21 @@ std::ostream &operator<<(std::ostream &o, const Code &c)
 			it++;
 			break;
 
+		case op::inc:
+			std::cout << c[it].as_op() << '\t';
+			it++;
+			std::cout << c[it].as_int();
+			it++;
+			break;
+
+
+		case op::dec:
+			std::cout << c[it].as_op() << '\t';
+			it++;
+			std::cout << c[it].as_int();
+			it++;
+			break;
+
 		case op::add:
 			std::cout << c[it].as_op() << '\t';
 			it++;

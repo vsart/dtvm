@@ -27,8 +27,7 @@ ret
 
 ; (return (* r0 (recursiveCall (- r0 1))))
 push    0
-cil     -1      1
-add     1       0
+dec     0
 push    0
 call    @recursiveCall
 pop     1

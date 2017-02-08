@@ -59,6 +59,26 @@ void execute(Code code)
             pc += 1;
             break;
 
+        case op::inc:
+            a1 = reg[code[pc+1].as_int()];
+            optype = a1.get_type();
+            if (optype == var_type::integer)
+                reg[code[pc+1].as_int()] = reg[code[pc+1].as_int()].as_int() + 1;
+            else
+                reg[code[pc+1].as_int()] = reg[code[pc+1].as_int()].as_float() + 1;
+            pc += 1;
+            break;
+
+        case op::dec:
+            a1 = reg[code[pc+1].as_int()];
+            optype = a1.get_type();
+            if (optype == var_type::integer)
+                reg[code[pc+1].as_int()] = reg[code[pc+1].as_int()].as_int() - 1;
+            else
+                reg[code[pc+1].as_int()] = reg[code[pc+1].as_int()].as_float() - 1;
+            pc += 1;
+            break;
+
         case op::add:
             a1 = reg[code[pc+1].as_int()];
             a2 = reg[code[pc+2].as_int()];
