@@ -2,7 +2,7 @@
 
 A toy VM implemented in C++
 
-This project is licensed under the terms of the MIT License. \
+This project is licensed under the terms of the MIT License. <br>
 See the LICENSE file for further details.
 
 ## 1. Usage
@@ -44,7 +44,7 @@ jlt  | lab    | Jumps to label lab last comparison was `true` for `<`
 call | lab    | Jumps to label lab pushing the address of the next <br> instruction into the callstack.
 ret  | None   | Jumps to the address at the top of the callstack and <br> pops it.
 
-¹ Fails if the operands don't have the same type \
+¹ Fails if the operands don't have the same type <br>
 ² Fails if the operands aren't both integers
 
 ## 3. Labels and Comments
