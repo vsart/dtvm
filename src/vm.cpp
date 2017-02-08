@@ -12,13 +12,19 @@
 // @TODO Wrap arithmetic operations of registers within overloaded operators instead
 
 
+enum state_flag {
+    VM_FLAG_GT = 0b100,
+    VM_FLAG_EQ = 0b010,
+    VM_FLAG_LT = 0b001,
+};
+
+
 void execute([[maybe_unused]] Code code)
 {
     std::stack<var> stack;
     std::stack<size_t> callstack;
     std::vector<var> reg(dtvm_args::num_regs, var(0));
-    // @TODO Optimize with bitops in just one uint8_t
-    bool lt, eq, gt;
+    uint8_t flags = 0;
 
     var a1, a2;
     var_type optype;
@@ -178,21 +184,21 @@ void execute([[maybe_unused]] Code code)
                 const auto v1 = a1.as_int();
                 const auto v2 = a2.as_int();
                 if (v1 < v2) {
-                    lt = true; eq = false; gt = false;
+                    flags = VM_FLAG_LT;
                 } else if (v1 == v2) {
-                    lt = false; eq = true; gt = false;
+                    flags = VM_FLAG_EQ;
                 } else {
-                    lt = false; eq = false; gt = true;
+                    flags = VM_FLAG_GT;
                 }
             } else {
                 const auto v1 = a1.as_float();
                 const auto v2 = a2.as_float();
                 if (v1 < v2) {
-                    lt = true; eq = false; gt = false;
+                    flags = VM_FLAG_LT;
                 } else if (v1 == v2) {
-                    lt = false; eq = true; gt = false;
+                    flags = VM_FLAG_EQ;
                 } else {
-                    lt = false; eq = false; gt = true;
+                    flags = VM_FLAG_GT;
                 }
             }
             // Implicitly doing nothing when optype is `op` (shouldn't happen).
@@ -205,20 +211,20 @@ void execute([[maybe_unused]] Code code)
             if (optype == var_type::integer) {
                 const auto v1 = a1.as_int();
                 if (v1 < 0) {
-                    lt = true; eq = false; gt = false;
+                    flags = VM_FLAG_LT;
                 } else if (v1 == 0) {
-                    lt = false; eq = true; gt = false;
+                    flags = VM_FLAG_EQ;
                 } else {
-                    lt = false; eq = false; gt = true;
+                    flags = VM_FLAG_GT;
                 }
             } else {
                 const auto v1 = a1.as_float();
                 if (v1 < 0) {
-                    lt = true; eq = false; gt = false;
+                    flags = VM_FLAG_LT;
                 } else if (v1 == 0) {
-                    lt = false; eq = true; gt = false;
+                    flags = VM_FLAG_EQ;
                 } else {
-                    lt = false; eq = false; gt = true;
+                    flags = VM_FLAG_GT;
                 }
             }
             // Implicitly doing nothing when optype is `op` (shouldn't happen).
@@ -230,21 +236,21 @@ void execute([[maybe_unused]] Code code)
             break;
 
         case op::jgt:
-            if (gt)
+            if (flags & VM_FLAG_GT)
                 pc = code[pc+1].as_int() - 1; // - 1 Because of increment
             else
                 pc += 1;
             break;
 
         case op::jeq:
-            if (eq)
+            if (flags & VM_FLAG_EQ)
                 pc = code[pc+1].as_int() - 1; // - 1 Because of increment
             else
                 pc += 1;
             break;
 
         case op::jlt:
-            if (lt)
+            if (flags & VM_FLAG_LT)
                 pc = code[pc+1].as_int() - 1; // - 1 Because of increment
             else
                 pc += 1;

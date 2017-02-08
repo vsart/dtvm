@@ -18,8 +18,6 @@
 
 int main(int argc, char **argv)
 {
-	// @TODO: Make it possible through a flag to one day be able to generate a binary file.
-
 	if (argc == 1) {
 		std::cout << Error() << "Invalid number of arguments" << std::endl;
 		std::cout << Warn() << "See the README file for usage information" << std::endl;
