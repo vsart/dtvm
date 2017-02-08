@@ -41,6 +41,20 @@ void execute(Code code)
             return;
         }
 
+        if (dtvm_args::debug) {
+            if (pc >= 2 && (code[pc-2].as_op() == op::ods || code[pc-2].as_op() == op::ofv))
+                std::cout << '\n';
+            if (dtvm_args::no_ansi_color_codes) {
+                std::cout << "DEBUG:\t";
+                display_line(std::cout, code, pc);
+                std::cout << std::endl;
+            } else {
+                std::cout << "\033[1;30;43m";
+                display_line(std::cout, code, pc);
+                std::cout << "\033[0m" << std::endl;
+            }
+        }
+
         switch (op) {
         case op::halt:
             return;

@@ -61,10 +61,6 @@ int main(int argc, char **argv)
 				std::cout << Warn() << "Unknown option '" << argv[i] << "'" << std::endl;
 		}
 
-		// @TODO Add debugger mode to VM
-		if (dtvm_args::debug)
-			std::cout << Warn() << "Debugger not yet implemented" << std::endl;
-
 		// Attempt to open file
 		std::string file_path(argv[1]);
 		std::ifstream file(file_path);

@@ -33,4 +33,5 @@ public:
 	int entry_point;
 };
 
+int display_line(std::ostream& o, const Code& c, int it);
 std::ostream &operator<<(std::ostream &o, const Code &c);
