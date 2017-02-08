@@ -203,11 +203,11 @@ bool parse_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code
 // @arg m  - Map to store the information regarding the label reference
 // @ret - Returns true if there was an error.
 bool parse_lab(std::stringstream &ss ,const std::string &sn, const int &ln, Code &c,
-               std::map<int64_t, std::string> &m)
+               std::map<int64_t, std::pair<int, std::string>> &m)
 {
 	std::string token;
 	ss >> token;
-	m[c.size()] = token;
+	m[c.size()] = std::pair<int, std::string>(ln, token);
 
 	// Add a filler
 	c.push_int(-1);
@@ -234,8 +234,9 @@ Code parse(std::ifstream& src, std::string& src_name)
 
 	// Holds the strings of the labels and the index they reference
 	std::map<std::string, int64_t> label_dict;
-	// Holds the index label references appear and the name of the label referenced
-	std::map<int64_t, std::string> label_refs;
+	// Holds the index the label reference appears mapping to the line number it appear and to the
+	// name of the label referenced
+	std::map<int64_t, std::pair<int, std::string>> label_refs;
 
 	while (std::getline(src, line)) {
 		line_num++;
@@ -396,11 +397,11 @@ Code parse(std::ifstream& src, std::string& src_name)
 	// 'addresses' where they were referenced.
 	for (auto &ref : label_refs) {
 		const auto index_to_change = ref.first;
-		const auto referenced_label = ref.second;
+		const auto referenced_label = ref.second.second;
 		const auto find_result = label_dict.find(referenced_label);
 		if (find_result == label_dict.end()) {
-			// @TODO Add information about where this label was used
-			std::cerr << Error() << "Unknown label '" << referenced_label << '\'' << std::endl;
+			std::cerr << Error() << "Unknown label '" << referenced_label << '\'' <<
+				" in " << src_name << '.' << ref.second.first << std::endl;
 			return Code();
 		}
 		const auto referenced_index = find_result->second;
