@@ -6,13 +6,11 @@
 #include <iostream>
 #include <sstream>
 
-#include <tuple>
+#include <utility>
 #include <map>
 
 #include "args.hpp"
 #include "error.hpp"
-
-// @TODO Change the uses of tuple to pairs in this file
 
 
 // get_int
@@ -22,14 +20,14 @@
 // @arg ln - Line number for error reporting
 // @ret - Second value reports true if there was an error and the first on is the integer
 //        value if the second value is false.
-std::tuple<int64_t, bool> get_int(std::stringstream &ss, const std::string &sn, const int &ln) {
+std::pair<int64_t, bool> get_int(std::stringstream &ss, const std::string &sn, const int &ln) {
 	int64_t integer_token;
 	ss >> integer_token;
 	if (ss.fail()) {
 		std::cerr << Error() << "Invalid integer literal in " << sn << '.' << ln << std::endl;
-		return std::make_tuple(0, true);
+		return std::pair<int64_t, bool>(0, true);
 	}
-	return std::make_tuple(integer_token, false);
+	return std::pair<int64_t, bool>(integer_token, false);
 }
 
 
@@ -41,18 +39,18 @@ std::tuple<int64_t, bool> get_int(std::stringstream &ss, const std::string &sn, 
 // @arg ln - Line number for error reporting
 // @ret - Second value reports true if there was an error and the first on is the index
 //        number if the second value is false.
-std::tuple<int64_t, bool> get_reg(std::stringstream &ss, const std::string &sn, const int &ln) {
+std::pair<int64_t, bool> get_reg(std::stringstream &ss, const std::string &sn, const int &ln) {
 	int64_t integer_token;
 	ss >> integer_token;
 	if (ss.fail()) {
 		std::cerr << Error() << "Invalid register literal in " << sn << '.' << ln << std::endl;
-		return std::make_tuple(0, true);
+		return std::pair<int64_t, bool>(0, true);
 	}
 	if (integer_token < 0 || integer_token >= dtvm_args::num_regs) {
 		std::cerr << Error() << "Invalid register " << integer_token << " at " << sn << '.' <<
 		ln << ". Should be within range [0," << dtvm_args::num_regs <<  ')' << std::endl;
 	}
-	return std::make_tuple(integer_token, false);
+	return std::pair<int64_t, bool>(integer_token, false);
 }
 
 
@@ -64,14 +62,14 @@ std::tuple<int64_t, bool> get_reg(std::stringstream &ss, const std::string &sn, 
 // @arg ln - Line number for error reporting
 // @ret - Second value reports true if there was an error and the first on is the floating
 //        point number if the second value is false.
-std::tuple<double, bool> get_float(std::stringstream &ss, const std::string &sn, const int &ln) {
+std::pair<double, bool> get_float(std::stringstream &ss, const std::string &sn, const int &ln) {
 	double float_token;
 	ss >> float_token;
 	if (ss.fail()) {
 		std::cerr << Error() << "Invalid register literal in " << sn << '.' << ln << std::endl;
-		return std::make_tuple(0., true);
+		return std::pair<double, bool>(0., true);
 	}
-	return std::make_tuple(float_token, false);
+	return std::pair<double, bool>(float_token, false);
 }
 
 
@@ -107,14 +105,14 @@ bool check_empty(std::stringstream &ss, const std::string &sn, const int &ln)
 bool parse_reg_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code &c)
 {
 	auto tmp1 = get_reg(ss, sn, ln);
-	if (std::get<1>(tmp1))
+	if (tmp1.second)
 		return true;
-	c.push_int(std::get<0>(tmp1));
+	c.push_int(tmp1.first);
 
 	auto tmp2 = get_reg(ss, sn, ln);
-	if (std::get<1>(tmp2))
+	if (tmp2.second)
 		return true;
-	c.push_int(std::get<0>(tmp2));
+	c.push_int(tmp2.first);
 
 	if (check_empty(ss, sn, ln))
 		return true;
@@ -133,14 +131,14 @@ bool parse_reg_reg(std::stringstream &ss, const std::string &sn, const int &ln, 
 bool parse_int_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code &c)
 {
 	auto tmp1 = get_int(ss, sn, ln);
-	if (std::get<1>(tmp1))
+	if (tmp1.second)
 		return true;
-	c.push_int(std::get<0>(tmp1));
+	c.push_int(tmp1.first);
 
 	auto tmp2 = get_reg(ss, sn, ln);
-	if (std::get<1>(tmp2))
+	if (tmp2.second)
 		return true;
-	c.push_int(std::get<0>(tmp2));
+	c.push_int(tmp2.first);
 
 	if (check_empty(ss, sn, ln))
 		return true;
@@ -159,14 +157,14 @@ bool parse_int_reg(std::stringstream &ss, const std::string &sn, const int &ln, 
 bool parse_flt_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code &c)
 {
 	auto tmp1 = get_float(ss, sn, ln);
-	if (std::get<1>(tmp1))
+	if (tmp1.second)
 		return true;
-	c.push_float(std::get<0>(tmp1));
+	c.push_float(tmp1.first);
 
 	auto tmp2 = get_reg(ss, sn, ln);
-	if (std::get<1>(tmp2))
+	if (tmp2.second)
 		return true;
-	c.push_int(std::get<0>(tmp2));
+	c.push_int(tmp2.first);
 
 	if (check_empty(ss, sn, ln))
 		return true;
@@ -185,9 +183,9 @@ bool parse_flt_reg(std::stringstream &ss, const std::string &sn, const int &ln, 
 bool parse_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code &c)
 {
 	auto tmp1 = get_reg(ss, sn, ln);
-	if (std::get<1>(tmp1))
+	if (tmp1.second)
 		return true;
-	c.push_int(std::get<0>(tmp1));
+	c.push_int(tmp1.first);
 
 	if (check_empty(ss, sn, ln))
 		return true;
