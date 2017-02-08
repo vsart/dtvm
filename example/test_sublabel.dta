@@ -1,0 +1,21 @@
+
+functionTwo:
+cil     -10     0
+.L0:  ; .L0 is a sublabel of functionTwo, so it expands to functionTwo.L0
+inc     0
+ofv     0
+cmpz    0
+jlt     .L0
+onl
+ret
+
+; Entry point
+_start:
+cil     10      0
+.L0:  ; .L0 here is a sublabel of _start, so it expands to _start.L0. Therefore, no conflicts.
+dec     0
+ofv     0
+cmpz    0
+jgt     .L0
+onl
+call functionTwo

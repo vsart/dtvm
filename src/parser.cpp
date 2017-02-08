@@ -203,10 +203,15 @@ bool parse_reg(std::stringstream &ss, const std::string &sn, const int &ln, Code
 // @arg m  - Map to store the information regarding the label reference
 // @ret - Returns true if there was an error.
 bool parse_lab(std::stringstream &ss ,const std::string &sn, const int &ln, Code &c,
-               std::map<int64_t, std::pair<int, std::string>> &m)
+               std::map<int64_t, std::pair<int, std::string>> &m, const std::string &cl)
 {
 	std::string token;
 	ss >> token;
+
+	// If it's a sublabel, expand it
+	if (token[0] == '.')
+		token = cl + token;
+
 	m[c.size()] = std::pair<int, std::string>(ln, token);
 
 	// Add a filler
@@ -232,6 +237,8 @@ Code parse(std::ifstream& src, std::string& src_name)
 	int line_num = 0;
 	std::string line;
 
+	std::string context_label = "";
+
 	// Holds the strings of the labels and the index they reference
 	std::map<std::string, int64_t> label_dict;
 	// Holds the index the label reference appears mapping to the line number it appear and to the
@@ -256,12 +263,27 @@ Code parse(std::ifstream& src, std::string& src_name)
 
 		// Check if line is a label
 		if (token.back() == ':') {
-			auto tmp = label_dict.find(token);
+			auto label_name = token.substr(0, token.length() - 1);
+			// Check if it's a sublabel in need of expansion
+			if (label_name[0] == '.') {
+				// Check if it's a valid sublabel
+				if (context_label.empty()) {
+					std::cerr << Error() << "Sublabel without context label '" << label_name <<
+						"' at " << src_name << '.' << line_num << std::endl;
+					return Code();
+				}
+				// Expand sublabel
+				label_name = context_label + label_name;
+			} else {
+				context_label = label_name;
+			}
+			// Check for label redefinitions
+			auto tmp = label_dict.find(label_name);
 			if (tmp != label_dict.end()) {
 				std::cout << Error() << "Invalid label redefinition at " << src_name << '.' <<
 					line_num << std::endl;
+				return Code();
 			}
-			auto const label_name = token.substr(0, token.length() - 1);
 			label_dict[label_name] = code.size();
 			if (label_name == dtvm_args::entry_point)
 				code.entry_point = code.size();
@@ -366,27 +388,27 @@ Code parse(std::ifstream& src, std::string& src_name)
 
 		} else if (token == "jmp") {
 			code.push_op(op::jmp);
-			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs, context_label))
 				return Code();
 
 		} else if (token == "jgt") {
 			code.push_op(op::jgt);
-			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs, context_label))
 				return Code();
 
 		} else if (token == "jeq") {
 			code.push_op(op::jeq);
-			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs, context_label))
 				return Code();
 
 		} else if (token == "jlt") {
 			code.push_op(op::jlt);
-			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs, context_label))
 				return Code();
 
 		} else if (token  == "call") {
 			code.push_op(op::call);
-			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs, context_label))
 				return Code();
 
 		} else if (token == "ret") {

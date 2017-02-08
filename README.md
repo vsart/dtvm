@@ -64,4 +64,7 @@ a file will reference a `halt` instruction.
 The program starts execution on the entry point label, which defaults to `_start`, but can be set
 through command line options.
 
+Also, any label `.lab` starting with a dot is considered a sublabel and is expanded to `cl.lab`,
+where `cl` is the context label, that being the last non-sublabel label read in the file.
+
 In general, see the examples folder for examples.
