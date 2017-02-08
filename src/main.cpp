@@ -21,8 +21,8 @@ int main(int argc, char **argv)
 	// @TODO: Make it possible through a flag to one day be able to generate a binary file.
 
 	if (argc == 1) {
-		// @TODO Print out proper usage information
-		std::cerr << Error() << "Invalid number of arguments" << std::endl;
+		std::cout << Error() << "Invalid number of arguments" << std::endl;
+		std::cout << Warn() << "See the README file for usage information" << std::endl;
 		return 1;
 	} else {
 		// Before anything, check if this is a version invocation
