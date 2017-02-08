@@ -19,30 +19,30 @@ See the LICENSE file for further details.
 
 | Instruction | Arguments | Description |
 |-------------|-----------|-------------|
-halt | None   | Halts execution of the VM
-noop | None   | No operations happen
-mov  | r1 r2  | Copies the value of r1 into r2
-push | r1     | Push value of r1 into the top of the stack
-pop  | r1     | Pops the top of the stack into r1
-inc  | r1     | Increments the value of r1 by 1.
-dec  | r1     | Decrements the value of r1 by 1.
-add¹ | r1 r2  | Adds value of r1 to r2
-sub¹ | r1 r2  | Subtracts value of r1 from r2
-mul¹ | r1 r2  | Multiplies value of r2 by r1
-div¹ | r1 r2  | Divides r2 by r1
-mod² | r1 r2  | Modulo operation of r2 by r1
-cil  | lit r2 | Sets the value of r2 to match the integer literal lit
-cfl  | lit r2 | Sets the value of r2 to match the floating point literal lit
-ofv  | r1     | Output formatted value of r1 to stdout
-onl  | None   | Print newline and flush stdout
-cmp¹ | r1 r2  | Compare r1 and r2
-cmpz | r1     | Compare r1 to the appropriate zero
-jmp  | lab    | Jumps uncoditionally to label lab
-jgt  | lab    | Jumps to label lab last comparison was `true` for `>`
-jeq  | lab    | Jumps to label lab last comparison was `true` for `=`
-jlt  | lab    | Jumps to label lab last comparison was `true` for `<`
-call | lab    | Jumps to label lab pushing the address of the next <br> instruction into the callstack.
-ret  | None   | Jumps to the address at the top of the callstack and <br> pops it.
+`halt` | None   | Halts execution of the VM
+`noop` | None   | No operations happen
+`mov`  | r1 r2  | Copies the value of r1 into r2
+`push` | r1     | Push value of r1 into the top of the stack
+`pop`  | r1     | Pops the top of the stack into r1
+`inc`  | r1     | Increments the value of r1 by 1.
+`dec`  | r1     | Decrements the value of r1 by 1.
+`add`¹ | r1 r2  | Adds value of r1 to r2
+`sub`¹ | r1 r2  | Subtracts value of r1 from r2
+`mul`¹ | r1 r2  | Multiplies value of r2 by r1
+`div`¹ | r1 r2  | Divides r2 by r1
+`mod`² | r1 r2  | Modulo operation of r2 by r1
+`cil`  | lit r2 | Sets the value of r2 to match the integer literal lit
+`cfl`  | lit r2 | Sets the value of r2 to match the floating point literal lit
+`ofv`  | r1     | Output formatted value of r1 to stdout
+`onl`  | None   | Print newline and flush stdout
+`cmp`¹ | r1 r2  | Compare r1 and r2
+`cmpz` | r1     | Compare r1 to the appropriate zero
+`jmp`  | lab    | Jumps uncoditionally to label lab
+`jgt`  | lab    | Jumps to label lab last comparison was `true` for `>`
+`jeq`  | lab    | Jumps to label lab last comparison was `true` for `=`
+`jlt`  | lab    | Jumps to label lab last comparison was `true` for `<`
+`call` | lab    | Jumps to label lab pushing the address of the next instruction into<br>the call stack.
+`ret`  | None   | Jumps to the address at the top of the callstack and pops it.
 
 ¹ Fails if the operands don't have the same type <br>
 ² Fails if the operands aren't both integers
