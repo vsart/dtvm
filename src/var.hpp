@@ -40,7 +40,7 @@ public:
 	var operator=(const op &rhs);
 
 	// @TODO @DECISION Maybe add type checking for these methods
-	int as_int() const;
+	int64_t as_int() const;
 	double as_float() const;
 	op as_op() const;
 };

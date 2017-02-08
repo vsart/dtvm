@@ -3,6 +3,8 @@
 
 #include "code.hpp"
 
+#include "error.hpp"
+
 
 // Empty constructor
 Code::Code()
@@ -58,6 +60,10 @@ void Code::display() const
 		}
 
 		std::cout << '\n' << it << ":\t";
+
+		if (data[it].get_type() != var_type::operation) {
+			std::cerr << Error() << "Tried to display a non-op as op at " << it << std::endl;
+		}
 
 		switch (data[it].as_op()) {
 		case op::halt:
@@ -212,9 +218,17 @@ void Code::display() const
 			it++;
 			break;
 
-		default:
-			// @TODO Make this an error as it shouldn't happen
-			std::cout << "????";
+		case op::call:
+			std::cout << data[it].as_op() << '\t';
+			it++;
+			std::cout << data[it].as_int();
+			it++;
+			break;
+
+		case op::ret:
+			std::cout << data[it].as_op() << '\t';
+			it++;
+			break;
 		}
 	}
 }

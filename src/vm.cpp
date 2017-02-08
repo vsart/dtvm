@@ -13,6 +13,7 @@
 void execute([[maybe_unused]] Code code)
 {
     std::stack<var> stack;
+    std::stack<size_t> callstack;
     var reg[8]; // @TODO Magic number :´(
     // @TODO Optimize with bitops in just one uint8_t
     bool lt, eq, gt;
@@ -245,6 +246,16 @@ void execute([[maybe_unused]] Code code)
                 pc = code[pc+1].as_int() - 1; // - 1 Because of increment
             else
                 pc += 1;
+            break;
+
+        case op::call:
+            callstack.push(pc + 1);
+            pc = code[pc+1].as_int() - 1; // - 1 Because of increment
+            break;
+
+        case op::ret:
+            pc = callstack.top();
+            callstack.pop();
             break;
         }
     }

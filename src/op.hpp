@@ -35,6 +35,9 @@ enum class op {
 	jgt,  // Jump to label if last comparison was `true` for `>`
 	jeq,  // Jump to label if last comparison was `true` for `=`
 	jlt,  // Jump to label if last comparison was `true` for `<`
+
+	call, // Jumps to a label
+	ret,  // Go back to the instruction after the last ret called
 };
 
 

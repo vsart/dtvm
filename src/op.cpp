@@ -47,5 +47,9 @@ std::ostream &operator<<(std::ostream &os, op const &o)
 		return os << "jeq ";
 	case op::jlt:
 		return os << "jlt ";
+	case op::call:
+		return os << "call";
+	case op::ret:
+		return os << "ret";
 	}
 }

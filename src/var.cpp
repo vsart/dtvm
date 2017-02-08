@@ -73,7 +73,7 @@ var var::operator=(const op &rhs) {
 
 
 // Get integer value
-int var::as_int() const
+int64_t var::as_int() const
 {
 	return value.i;
 }

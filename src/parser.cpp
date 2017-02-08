@@ -364,6 +364,16 @@ Code parse(std::ifstream& src, std::string& src_name)
 			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
 				return Code();
 
+		} else if (token  == "call") {
+			code.push_op(op::call);
+			if (parse_lab(line_stream, src_name, line_num, code, label_refs))
+				return Code();
+
+		} else if (token == "ret") {
+			code.push_op(op::ret);
+			if (check_empty(line_stream, src_name, line_num))
+				return Code();
+
 		} else {
 			std::cerr << Error() << "Unkown instruction '" << token << "' in " <<
 			             src_name << '.' << line_num << std::endl;
