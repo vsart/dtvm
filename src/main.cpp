@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "args.hpp"
 #include "error.hpp"
@@ -39,19 +40,24 @@ int main(int argc, char **argv)
 				dtvm_args::no_ansi_color_codes = true;
 			else if (arg == "-parse-and-print")
 				dtvm_args::parse_and_print = true;
-			else if (arg == "-r8")
-				dtvm_args::num_regs = 8;
-			else if (arg == "-r16")
-				dtvm_args::num_regs = 16;
-			else if (arg == "-r32")
-				dtvm_args::num_regs = 32;
 			else if (arg == "-debug")
 				dtvm_args::debug = true;
 			else if (arg == "-show-data")
 				dtvm_args::show_data = true;
 			else if (arg.substr(0,2) == "-e")
 				dtvm_args::entry_point = arg.substr(2, arg.length());
-			else
+			else if (arg.substr(0,2) == "-r") {
+				std::stringstream tmp(arg.substr(2, arg.length()));
+				if (!(tmp >> dtvm_args::num_regs)) {
+					std::cerr << Error() << "Invalid `-r` argument." << std::endl;
+					return 0;
+				}
+				if (dtvm_args::num_regs < 0) {
+					std::cerr << Error() << "Cannot set number of register to negative value" <<
+						std::endl;
+					return 0;
+				}
+			} else
 				std::cout << Warn() << "Unknown option '" << argv[i] << "'" << std::endl;
 		}
 

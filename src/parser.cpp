@@ -48,7 +48,8 @@ std::pair<int64_t, bool> get_reg(std::stringstream &ss, const std::string &sn, c
 	}
 	if (integer_token < 0 || integer_token >= dtvm_args::num_regs) {
 		std::cerr << Error() << "Invalid register " << integer_token << " at " << sn << '.' <<
-		ln << ". Should be within range [0," << dtvm_args::num_regs <<  ')' << std::endl;
+			ln << ". Should be within range [0," << dtvm_args::num_regs <<  ')' << std::endl;
+		return std::pair<int64_t, bool>(0, true);
 	}
 	return std::pair<int64_t, bool>(integer_token, false);
 }

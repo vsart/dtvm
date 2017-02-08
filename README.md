@@ -14,7 +14,7 @@ See the LICENSE file for further details.
 |---------|-------------|
 | -no-acc <br> -no-ansi-color-codes |  Tells the application not to use ANSI color codes on outputs. |
 | -parse-and-print | Makes it so the application only parses the code and print the interpreted version <br> to the stdout, not executing it. The only difference between the printed code from <br> the source is that there are no empty lines, labels or comments, and j** instructions <br> hold the index to be jumped to as their arguments. |
-| -r8 <br> -r16 <br> -r32 | Sets the number of registers of the VM to 8, 16 and 32 respectively. |
+| -r`val` | Sets the number of registers of the VM to `val`. |
 | -e`labname` | Sets the entry point of the program to be at label `labname` |
 | -show-data | Only takes effect if -parse-and-print was given.  Also displays strings with the code. |
 | -debug | Starts the VM into debugging mode |

@@ -16,8 +16,8 @@ namespace dtvm_args {
 	// Makes it so the application only parses and pretty print the bytecode
 	// instead of also executing it
 	extern bool parse_and_print;
-	// "-r8" or "-r16" or "-r32"
-	// Number of registers for the VM
+	// "-r<value>"
+	// Number of registers for the VM. Defaults to 8.
 	extern int num_regs;
 	// "-e<name>"
 	// Sets the entry point of the program to be the label <name>, by default it's start
