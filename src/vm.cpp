@@ -31,7 +31,6 @@ void execute([[maybe_unused]] Code code)
     for (pc = 0; pc < code.size(); pc++) {
         const auto op = code[pc].as_op();
 
-        // @TODO @DECISION Keep guard against errors for being not an op?
         if (code[pc].get_type() != var_type::operation) {
             std::cout << Error() << "VM tried to execute a non-operation at " << pc << std::endl;
             return;
@@ -65,7 +64,6 @@ void execute([[maybe_unused]] Code code)
             a2 = reg[code[pc+2].as_int()];
             optype = a1.get_type();
             if (optype != a2.get_type()) {
-                // @TODO @DECISION Remove this check and just use the first type?
                 std::cerr << Error() << "Type mismatch at " << pc << std::endl;
                 return;
             }
@@ -83,7 +81,6 @@ void execute([[maybe_unused]] Code code)
             a2 = reg[code[pc+2].as_int()];
             optype = a1.get_type();
             if (optype != a2.get_type()) {
-                // @TODO @DECISION Remove this check and just use the first type?
                 std::cerr << Error() << "Type mismatch at " << pc << std::endl;
                 return;
             }
@@ -101,7 +98,6 @@ void execute([[maybe_unused]] Code code)
             a2 = reg[code[pc+2].as_int()];
             optype = a1.get_type();
             if (optype != a2.get_type()) {
-                // @TODO @DECISION Remove this check and just use the first type?
                 std::cerr << Error() << "Type mismatch at " << pc << std::endl;
                 return;
             }
@@ -119,7 +115,6 @@ void execute([[maybe_unused]] Code code)
             a2 = reg[code[pc+2].as_int()];
             optype = a1.get_type();
             if (optype != a2.get_type()) {
-                // @TODO @DECISION Remove this check and just use the first type?
                 std::cerr << Error() << "Type mismatch at " << pc << std::endl;
                 return;
             }
@@ -137,12 +132,10 @@ void execute([[maybe_unused]] Code code)
             a2 = reg[code[pc+2].as_int()];
             optype = a1.get_type();
             if (optype != a2.get_type()) {
-                // @TODO @DECISION Remove this check
                 std::cerr << Error() << "Type mismatch at " << pc << std::endl;
                 return;
             }
             if (optype != var_type::integer) {
-                // @TODO DECISION Remove this check and assume integer
                 std::cerr << Error() << "Invalid type at " << pc << std::endl;
                 return;
             }
@@ -174,7 +167,6 @@ void execute([[maybe_unused]] Code code)
             a2 = reg[code[pc+2].as_int()];
             optype = a1.get_type();
             if (optype != a2.get_type()) {
-                // @TODO @DECISION Remove this check
                 std::cerr << Error() << "Type mismatch at " << pc << std::endl;
                 return;
             }
