@@ -1,4 +1,5 @@
-# DTVM
+![DTVM](images/Logo.png) <br>
+<sup> Gecko made by [Freepik](http://www.flaticon.com/authors/freepik) from [flaticon](www.flaticon.com) and font [Abel](https://fonts.google.com/specimen/Abel) made by [MADType](http://www.madtype.com/)</sup>
 
 A toy VM implemented in C++
 
