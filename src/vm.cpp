@@ -254,6 +254,10 @@ void execute([[maybe_unused]] Code code)
             break;
 
         case op::ret:
+            if (callstack.empty()) {
+                std::cerr << Error() << "`ret` in an empty callstack at " << pc << std::endl;
+                return;
+            }
             pc = callstack.top();
             callstack.pop();
             break;
