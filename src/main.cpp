@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 
 		// If the program was called with -parse-and-print, just pretty print the parsed bytecode.
 		if (dtvm_args::parse_and_print) {
-			code.display();
+			std::cout << code;
 			return 0;
 		}
 

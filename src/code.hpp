@@ -24,8 +24,9 @@ public:
 	void push_float(double f);
 
 	var& operator[](int idx);
+	var operator[](int idx) const;
 
 	size_t size() const;
-
-	void display() const;
 };
+
+std::ostream &operator<<(std::ostream &o, const Code &c);

@@ -38,6 +38,10 @@ var& Code::operator[](int idx)
 {
 	return data[idx];
 }
+var Code::operator[](int idx) const
+{
+	return data[idx];
+}
 
 
 // Add a shortcut to get data size
@@ -48,185 +52,184 @@ size_t Code::size() const
 
 
 // Pretty prints the code to stdout
-// @TODO: Change this to ostream &operator<< method
-void Code::display() const
+std::ostream &operator<<(std::ostream &o, const Code &c)
 {
 	size_t it = 0;
 
 	while (true) {
-		if (it >= data.size()) {
+		if (it >= c.size()) {
 			std::cout << std::endl;
-			return;
+			return o;
 		}
 
 		std::cout << '\n' << it << ":\t";
 
-		if (data[it].get_type() != var_type::operation) {
+		if (c[it].get_type() != var_type::operation) {
 			std::cerr << Error() << "Tried to display a non-op as op at " << it << std::endl;
 		}
 
-		switch (data[it].as_op()) {
+		switch (c[it].as_op()) {
 		case op::halt:
-			std::cout << data[it].as_op();
+			std::cout << c[it].as_op();
 			it++;
 			break;
 
 		case op::noop:
-			std::cout << data[it].as_op();
+			std::cout << c[it].as_op();
 			it++;
 			break;
 
 		case op::mov:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int() << '\t';
+			std::cout << c[it].as_int() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::push:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::pop:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::add:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int() << '\t';
+			std::cout << c[it].as_int() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::sub:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int() << '\t';
+			std::cout << c[it].as_int() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::mul:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int() << '\t';
+			std::cout << c[it].as_int() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::div:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int() << '\t';
+			std::cout << c[it].as_int() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::mod:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int() << '\t';
+			std::cout << c[it].as_int() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::cil:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int() << '\t';
+			std::cout << c[it].as_int() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::cfl:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_float() << '\t';
+			std::cout << c[it].as_float() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::ofv:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::onl:
-			std::cout << data[it].as_op();
+			std::cout << c[it].as_op();
 			it++;
 			break;
 
 		case op::cmp:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int() << '\t';
+			std::cout << c[it].as_int() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::cmpz:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::jmp:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::jgt:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::jeq:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::jlt:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::call:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
-			std::cout << data[it].as_int();
+			std::cout << c[it].as_int();
 			it++;
 			break;
 
 		case op::ret:
-			std::cout << data[it].as_op() << '\t';
+			std::cout << c[it].as_op() << '\t';
 			it++;
 			break;
 		}
