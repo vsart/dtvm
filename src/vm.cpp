@@ -49,7 +49,7 @@ void execute(Code code)
                 display_line(std::cout, code, pc);
                 std::cout << std::endl;
             } else {
-                std::cout << "\033[1;30;43m";
+                std::cout << "\033[1;30;43m" << pc << ":\t";
                 display_line(std::cout, code, pc);
                 std::cout << "\033[0m" << std::endl;
             }

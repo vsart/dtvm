@@ -257,7 +257,7 @@ int display_line(std::ostream& o, const Code& c, int it)
 		break;
 
 	case op::ret:
-		o << c[it].as_op() << '\t';
+		o << c[it].as_op();
 		it++;
 		break;
 	}

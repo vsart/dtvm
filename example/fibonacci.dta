@@ -1,0 +1,78 @@
+;; Data section
+data	welcome		"Welcome to the DTA Fibonacci program!\n"
+data	promptnum	"Which fibonacci number do you want? "
+data	badinput	"Err, that wasn't a valid number. Try again!\n"
+data	confirm1	"You chose the number "
+data	confirm2	".\n"
+data	result1		"The "
+data	result2		"th Fibonacci number is "
+data	result3		"!\n"
+
+;; Code section
+
+;; get_value() -> int
+;; Dirties r1
+get_value:
+iiv	0
+ipf	1
+cmz	1
+jgt	.error
+ret
+.error:
+cil	-1	0
+ret
+
+
+;; fibonacci(x int) -> int
+;; Dirties r2
+fibonacci:
+cil	2	2
+cmp	0	2
+jlt	.ret		; If x < 2, return x
+
+dec	0
+push	0
+call	fibonacci
+pop	2
+push	0
+mov	2	0
+dec	0
+call	fibonacci
+pop	2
+add	2	0
+.ret:
+ret
+
+
+;; _start: entry point
+_start:
+ods	welcome
+ods	promptnum
+
+.get_value:
+call	get_value
+cmz	0
+jlt	.error
+
+.confirm:
+ods	confirm1
+ofv	0
+ods	confirm2
+
+.fibonacci:
+mov	0	1
+push	0
+call	fibonacci
+ods	result1
+ofv	1
+ods	result2
+ofv	0
+ods	result3
+
+.exit:
+halt
+
+.error:
+ods	badinput
+jmp	.get_value
+

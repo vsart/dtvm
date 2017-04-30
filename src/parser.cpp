@@ -485,7 +485,7 @@ Code parse(std::ifstream& src, std::string& src_name)
 			if (parse_reg_reg(line_stream, src_name, line_num, code))
 				return Code();
 
-		} else if (token == "cmpz") {
+		} else if (token == "cmpz" || token == "cmz") {
 			code.push_op(op::cmpz);
 			if (parse_reg(line_stream, src_name, line_num, code))
 				return Code();

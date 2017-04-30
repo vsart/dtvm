@@ -12,50 +12,50 @@ cfl     2       5       ; const
 dec     0
 dec     0
 cmp     0       1
-jgt     @failFirst
-jlt     @failFirst
+jgt     failFirst
+jlt     failFirst
 
 cil     1       7
 ofv     7
 
-@failFirst
+failFirst:
 
 inc     0
 inc     0
 inc     0
 inc     0
 cmp     0       2
-jgt     @failSecond
-jlt     @failSecond
+jgt     failSecond
+jlt     failSecond
 
 cil     2       7
 ofv     7
 
-@failSecond
+failSecond:
 
 dec     3
 dec     3
 cmp     3       4
-jgt     @failThird
-jlt     @failThird
+jgt     failThird
+jlt     failThird
 
 cil     3       7
 ofv     7
 
-@failThird
+failThird:
 
 inc     3
 inc     3
 inc     3
 inc     3
 cmp     3       5
-jgt     @failFourth
-jlt     @failFourth
+jgt     failFourth
+jlt     failFourth
 
 cil     4       7
 ofv     7
 
-@failFourth
+failFourth:
 onl
 
 ; Output should be
